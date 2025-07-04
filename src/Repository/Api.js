@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BaseUrl, getAuthHeaders } from '../components/BaseURl/BaseUrl'
+import { BaseUrl, getAuthHeaders } from '../components/BaseUrl/BaseUrl'
 import { toast } from 'sonner';
 
 const handleError = (error, customErrorMsg) => {
