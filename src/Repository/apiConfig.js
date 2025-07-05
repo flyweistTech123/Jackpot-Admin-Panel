@@ -1,32 +1,36 @@
 const endPoints = {
     loginAdmin: "admin/signin",
-    getprivactpolicy: "api/v1/static/getPrivacy",
-    getterms: "api/v1/static/getTerms",
-    getprivactpolicybyid: (id) => `api/v1/static/privacy/${id}`,
+
 
     getallUser: (page, limit, search, status) =>
-        `admin/userList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}&userType=USER`,
+        `admin/userList?page=${page}&limit=${limit}&search=${search ? search : ""}&isKyc=${status ? status : ""}`,
+    getallTransactionlist: (page, limit, search, status) =>
+        `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
+
+    getrules: "admin/allRule",
 
 
-   
 
-    
     getuserbyid: (id) =>
         `admin/User/${id}`,
 
-    addMaincategory: "api/v1/admin/mainCategory/addCategory",
+
+
+    addRules: "admin/addRule",
 
 
 
 
-    updateMaincategory: (id) =>
-        `api/v1/admin/mainCategory/updateCategory/${id}`,
-   
+    updateRole: (id) =>
+        `admin/updateRule/${id}`,
+
 
 
     deleteuser: (id) =>
         `admin/User/${id}`,
-   
+    deleterole: (id) =>
+        `admin/deleteRule/${id}`,
+
 
 
 };

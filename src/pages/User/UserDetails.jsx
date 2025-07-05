@@ -33,7 +33,7 @@ const UserDetails = () => {
         fetchData();
     }, [fetchData]);
 
-    const kycStatus = userData?.data?.kycStatus;
+    const kycStatus = userData?.data?.isKyc;
 
     return (
         <DashbaordLayout

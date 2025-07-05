@@ -2,23 +2,20 @@ import React, { useCallback, useEffect, useState } from 'react'
 import DashbaordLayout from '../../components/DashbaordLayout'
 
 import { IoSearch } from "react-icons/io5";
-import { PiEyeBold } from "react-icons/pi";
-import { FiEdit } from "react-icons/fi";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaCheck } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
 
 
 import { useNavigate } from 'react-router-dom';
 import { ConfirmModal } from '../../components/Modals/Modal';
 import endPoints from '../../Repository/apiConfig';
 import { deleteApi, getApi } from '../../Repository/Api';
+import { formatDate } from '../../utils/utils';
 
 
-const AllUsers = () => {
+
+const TransactionList = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [userData, setUserData] = useState([]);
+    const [transactionData, setTransactionData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('')
     const [searchQuery, setSearchQuery] = useState("");
@@ -34,9 +31,9 @@ const AllUsers = () => {
 
 
     const fetchData = useCallback(async () => {
-        setUserData([])
-        await getApi(endPoints.getallUser(pagination.page, pagination.limit, searchQuery), {
-            setResponse: setUserData,
+        setTransactionData([])
+        await getApi(endPoints.getallTransactionlist(pagination.page, pagination.limit, searchQuery), {
+            setResponse: setTransactionData,
             setLoading: setLoading,
             errorMsg: "Failed to fetch user data!",
         })
@@ -45,11 +42,11 @@ const AllUsers = () => {
     useEffect(() => {
         setPagination((prevPagination) => ({
             ...prevPagination,
-            totalPages: userData?.pagination?.totalPages,
-            hasPrevPage: userData?.pagination?.hasPrevPage,
-            hasNextPage: userData?.pagination?.hasNextPage,
+            totalPages: transactionData?.pagination?.totalPages,
+            hasPrevPage: transactionData?.pagination?.hasPrevPage,
+            hasNextPage: transactionData?.pagination?.hasNextPage,
         }));
-    }, [userData]);
+    }, [transactionData]);
 
 
     const handleSearchChange = (e) => {
@@ -92,8 +89,8 @@ const AllUsers = () => {
 
 
     return (
-        <DashbaordLayout title="User"
-            hedartitle="User"
+        <DashbaordLayout title="Transaction List"
+            hedartitle="Transaction List"
         >
             <ConfirmModal
                 isOpen={showModal}
@@ -103,12 +100,12 @@ const AllUsers = () => {
                 text="Delete"
             />
             <div className="sm:mt-5 mt-2">
-                <div className='flex items-center justify-between mb-4 flex-wrap gap-2'>
+                {/* <div className='flex items-center justify-between mb-4 flex-wrap gap-2'>
                     <div className='flex items-center gap-2 flex-wrap'>
-                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-sm'>
+                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-min'>
                             <input
                                 type="search"
-                                placeholder="Search by name, email or number"
+                                placeholder="Search by name or ID"
                                 value={search}
                                 onChange={handleSearchChange}
                                 className='flex-1 border-0 outline-0 font-urbanist placeholder:text-[15px] font-semibold placeholder:text-[#9EACBF]'
@@ -120,33 +117,33 @@ const AllUsers = () => {
                             className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             Search
                         </button>
-                        {/* <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             PDF
                         </button>
                         <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             CSV
-                        </button> */}
+                        </button>
                     </div>
-                    {/* <div className='sm:flex items-center gap-2 hidden'>
+                    <div className='sm:flex items-center gap-2 hidden'>
                         <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             PDF
                         </button>
                         <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             CSV
                         </button>
-                    </div> */}
-                </div>
+                    </div>
+                </div> */}
                 <div className='overflow-x-auto'>
                     <table className="min-w-full border-collapse">
                         <thead>
                             <tr className="bg-white text-left font-urbanist text-md font-semibold text-[#0A0E15]">
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[10px] rounded-bl-[10px]">#</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Name</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Email</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Contact</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">KYC</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Earning</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tr-[10px] rounded-br-[10px]">Action</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">User Name</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">User Email</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">User Contact</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Transaction Date</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Amount</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tr-[10px] rounded-br-[10px]">Type</th>
                             </tr>
                         </thead>
                         <tbody className="font-manrope text-[15px] font-[400] text-[#000000]">
@@ -160,33 +157,22 @@ const AllUsers = () => {
                                     </td>
                                 </tr>
                                 :
-                                (!userData?.data?.docs || userData?.data?.docs?.length === 0) ? (
+                                (!transactionData?.data || transactionData?.data?.docs?.length === 0) ? (
                                     <tr>
                                         <td colSpan="9" className='text-center'>
                                             <p className='font-urbanist text-md font-semibold text-[#0A0E15]'>No data available!</p>
                                         </td>
                                     </tr>
                                 ) :
-                                    userData?.data?.docs?.map((i, index) => (
+                                    transactionData?.data?.docs?.map((i, index) => (
                                         <tr key={index} className=" bg-white space-y-10 transition-all hover:bg-[#E1F7FF]">
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">{index + 1}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.fullName}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.email}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.mobileNumber}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">
-                                                {i.isKyc ? <FaCheck color='#34C759' size={20} /> : <IoClose color='#F04D58' size={20} />}
-                                            </td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.earning}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
-                                                <div className="flex items-center gap-2">
-                                                    <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
-                                                        <PiEyeBold color='#FFB000' size={20} />
-                                                    </button>
-                                                    <button onClick={() => handleDeleteClick(i?._id)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#C23A3A] flex items-center gap-1">
-                                                        <RiDeleteBin6Line color='#C23A3A' size={20} />
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.user?.fullName}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.user?.email}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.user?.mobileNumber}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{formatDate(i?.date)}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.amount}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.type}</td>
                                         </tr>
                                     ))}
                         </tbody>
@@ -197,4 +183,4 @@ const AllUsers = () => {
     )
 }
 
-export default AllUsers
+export default TransactionList

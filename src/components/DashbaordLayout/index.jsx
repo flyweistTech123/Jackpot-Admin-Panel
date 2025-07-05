@@ -20,6 +20,8 @@ import { FaHourglassHalf, } from "react-icons/fa";
 import { TbUserOff } from "react-icons/tb";
 import { MdOutlineLiveHelp } from "react-icons/md";
 import { MdOutlineLocalActivity } from "react-icons/md";
+import { MdOutlineRuleFolder } from "react-icons/md";
+import { GrTransaction } from "react-icons/gr";
 
 import img1 from '../../assets/images/logo.png'
 import img2 from '../../assets/images/Adviser1.png'
@@ -51,6 +53,16 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       name: "User",
       icon: LuUsersRound,
       path: "/users"
+    },
+    {
+      name: "Rules",
+      icon: MdOutlineRuleFolder,
+      path: "/rules"
+    },
+    {
+      name: "Transaction List",
+      icon: GrTransaction,
+      path: "/transaction-list"
     },
     {
       name: "Adviser",

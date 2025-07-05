@@ -32,6 +32,8 @@ import PageManagement from './pages/Page Management';
 import Reviewlist from './pages/Adviser/Reviewlist';
 import Subscriberlist from './pages/Adviser/SubscriberList';
 import PackageEarning from './pages/Earning/PackageEarning';
+import Rules from './pages/Rules';
+import TransactionList from './pages/Transaction List';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -55,6 +57,8 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<AllUsers />} />
+          <Route path="/rules" element={<Rules />} />
+          <Route path="/transaction-list" element={<TransactionList />} />
           <Route path="/adviser/list" element={<AdviserList />} />
           <Route path="/adviser/pending" element={<PendingRequest />} />
           <Route path="/adviser/suspended" element={<SuspendedList />} />
