@@ -6,20 +6,20 @@ import 'react-quill/dist/quill.snow.css'; // default styling
 
 
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm, text }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm, text, loading }) => {
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0  flex items-center justify-center z-50 bg-black/80">
-            <div className="bg-white w-full max-w-md rounded-lg shadow-2xl p-6">
+            <div className="bg-white w-full max-w-md rounded-lg shadow-2xl p-3">
                 {/* Close Button */}
 
                 <div className="flex items-center justify-between mb-3">
-                    <h2 className="font-manrope text-[16px] font-bold text-[#000000]">Are you Sure</h2>
+                    <h2 className="font-poppins text-[16px] font-bold text-[#000000]">Are you Sure</h2>
                     <IoMdCloseCircleOutline color="#C12D34" size={25} className="cursor-pointer" onClick={onClose} />
                 </div>
 
-                <p className="font-manrope text-[18px] font-bold text-[#362695] text-center mb-6">
+                <p className="font-poppins text-[18px] font-bold text-[#FFB000] text-center mb-6">
                     Do you want to {text}
                 </p>
 
@@ -27,17 +27,15 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, text }) => {
                 <div className="flex justify-center gap-4">
                     <button
                         onClick={onClose}
-                        className="px-20 py-3.5  border border-[#4F4F4F] font-manrope text-[16px] font-[400] text-[#4C4C4C]"
+                        className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
                     >
                         No
                     </button>
                     <button
                         onClick={onConfirm}
-                        className="px-20 py-3.5 bg-[#FEECEC]  border border-solid
-         [border-image-source:linear-gradient(90deg,#C82D30_1.89%,#362695_67.23%,#B12F31_136.79%)]
-         [border-image-slice:1] font-manrope text-[16px] font-[400] text-[#000000]"
+                        className="px-10 py-3 cursor-pointer bg-[#FFB0004D]  border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000]"
                     >
-                        Yes
+                        {loading ? "Deleting..." : "Yes"}
                     </button>
                 </div>
             </div>

@@ -218,7 +218,7 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       {/* Sidebar */}
       <aside
         id="mobile-sidebar"
-        className={`fixed top-0 left-0 z-40 h-full w-[260px]  pt-[90px] transition-transform duration-300 ease-in-out shadow-2xl
+        className={`bg-white fixed top-0 left-0 z-40 h-full w-[260px]  pt-[90px] transition-transform duration-300 ease-in-out shadow-2xl
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} md:relative md:translate-x-0 md:w-[240px]`}
       >
         {/* Close button on mobile */}

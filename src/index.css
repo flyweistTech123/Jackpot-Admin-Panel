@@ -21,8 +21,9 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* background-color: #E2E8F0; */
-  background-color: #F8F8F8;
+  background-color: #E2E8F0;
+  /* background-color: #F8F8F8; */
+  /* background-color: #FFB0004D; */
 }
 
 a {
