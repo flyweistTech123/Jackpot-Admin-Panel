@@ -34,6 +34,15 @@ import Subscriberlist from './pages/Adviser/SubscriberList';
 import PackageEarning from './pages/Earning/PackageEarning';
 import Rules from './pages/Rules';
 import TransactionList from './pages/Transaction List';
+import PrivacyPolicy from './pages/Privacy Policy';
+import TermsandConditions from './pages/Terms and Conditions';
+import CoinSystem from './pages/Coin System';
+import HowToPlay from './pages/How To Play';
+import ResponsibleGaming from './pages/Responsible Gaming';
+import PoweredByCompany from './pages/Powered By Company';
+import HelpAndSupport from './pages/Help And Support';
+import Rtp from './pages/Rtp';
+import ContactDetails from './pages/Contact Details';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -59,6 +68,15 @@ export default function App() {
           <Route path="/users" element={<AllUsers />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/transaction-list" element={<TransactionList />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsandConditions />} />
+          <Route path="/coin-system" element={<CoinSystem />} />
+          <Route path="/how-to-play" element={<HowToPlay />} />
+          <Route path="/responsible-gaming" element={<ResponsibleGaming />} />
+          <Route path="/powered-by-company" element={<PoweredByCompany />} />
+          <Route path="/help-and-support" element={<HelpAndSupport />} />
+          <Route path="/rtp" element={<Rtp />} />
+          <Route path="/contact-details" element={<ContactDetails />} />
           <Route path="/adviser/list" element={<AdviserList />} />
           <Route path="/adviser/pending" element={<PendingRequest />} />
           <Route path="/adviser/suspended" element={<SuspendedList />} />

@@ -8,6 +8,15 @@ const endPoints = {
         `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
 
     getrules: "admin/allRule",
+    getprivacypolicy: "static/getPrivacy",
+    getTermsandConditions: "static/getTerms",
+    getCoinSystem: "static/getCoinSystem",
+    getHowToPlay: "static/getHowToPlay",
+    getResponsibleGaming: "static/getResponsibleGaming",
+    getpoweredbycompany: "static/getPoweredByCompanyn",
+    getHelpAndSupport: "static/getHelpAndSupport",
+    getRTP: "user/getRtp",
+    getContactDetails: "static/viewContactDetails",
 
 
 
@@ -17,6 +26,14 @@ const endPoints = {
 
 
     addRules: "admin/addRule",
+    addPrivacypolicy: "static/createPrivacy",
+    addTermsandConditions: "static/createTerms",
+    addHowToPlay: "static/createHowToPlay",
+    addResponsibleGaming: "static/createResponsibleGaming",
+    addpoweredbycompany: "static/createPoweredByCompanyn",
+    addHelpAndSupport: "static/createHelpAndSupport",
+    addrtp: "static/createOverAllGame",
+    addContactDetails: "static/addContactDetails",
 
 
 

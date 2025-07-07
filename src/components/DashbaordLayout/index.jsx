@@ -22,6 +22,14 @@ import { MdOutlineLiveHelp } from "react-icons/md";
 import { MdOutlineLocalActivity } from "react-icons/md";
 import { MdOutlineRuleFolder } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
+import { MdOutlinePrivacyTip } from "react-icons/md";
+import { TbFileText } from "react-icons/tb";
+import { PiCoins } from "react-icons/pi";
+import { FaRegCirclePlay } from "react-icons/fa6";
+import { IoGameControllerOutline } from "react-icons/io5";
+import { FaRegBuilding } from "react-icons/fa";
+import { TiChartPieOutline } from "react-icons/ti";
+import { TiContacts } from "react-icons/ti";
 
 import img1 from '../../assets/images/logo.png'
 import img2 from '../../assets/images/Adviser1.png'
@@ -63,6 +71,51 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       name: "Transaction List",
       icon: GrTransaction,
       path: "/transaction-list"
+    },
+    {
+      name: "Privacy Policy",
+      icon: MdOutlinePrivacyTip,
+      path: "/privacy-policy"
+    },
+    {
+      name: "Terms and Conditions",
+      icon: TbFileText,
+      path: "/terms-and-conditions"
+    },
+    {
+      name: "Coin System",
+      icon: PiCoins,
+      path: "/coin-system"
+    },
+    {
+      name: "How To Play",
+      icon: FaRegCirclePlay,
+      path: "/how-to-play"
+    },
+    {
+      name: "Responsible Gaming",
+      icon: IoGameControllerOutline,
+      path: "/responsible-gaming"
+    },
+    {
+      name: "Powered By Company",
+      icon: FaRegBuilding,
+      path: "/powered-by-company"
+    },
+    {
+      name: "Help And Support",
+      icon: BiSupport,
+      path: "/help-and-support"
+    },
+    {
+      name: "RTP",
+      icon: TiChartPieOutline,
+      path: "/rtp"
+    },
+    {
+      name: "Contact Details",
+      icon: TiContacts,
+      path: "/contact-details"
     },
     {
       name: "Adviser",
