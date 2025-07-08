@@ -115,3 +115,27 @@ button {
 .hidescroll::-webkit-scrollbar {
   display: none;
 }
+
+
+.home-skills-demo-button {
+    background-image: linear-gradient(to right, rgb(34, 197, 94), rgb(22, 163, 74));
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-size: 1.125rem;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    transition: 0.3s ease-out;
+}
+
+
+.home-skills-demo-button:hover {
+    background-image: linear-gradient(to right, rgb(22, 163, 74), rgb(21, 128, 61));
+    transform: scale(1.05);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}

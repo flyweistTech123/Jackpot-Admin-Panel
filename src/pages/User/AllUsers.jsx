@@ -3,7 +3,6 @@ import DashbaordLayout from '../../components/DashbaordLayout'
 
 import { IoSearch } from "react-icons/io5";
 import { PiEyeBold } from "react-icons/pi";
-import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
@@ -13,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { ConfirmModal } from '../../components/Modals/Modal';
 import endPoints from '../../Repository/apiConfig';
 import { deleteApi, getApi } from '../../Repository/Api';
+import Pagination from '../../components/Pagination/Pagination';
 
 
 const AllUsers = () => {
@@ -31,23 +31,24 @@ const AllUsers = () => {
     });
     const [itemToDelete, setItemToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [kycFilter, setKycFilter] = useState("");
 
 
     const fetchData = useCallback(async () => {
         setUserData([])
-        await getApi(endPoints.getallUser(pagination.page, pagination.limit, searchQuery), {
+        await getApi(endPoints.getallUser(pagination.page, pagination.limit, searchQuery, kycFilter), {
             setResponse: setUserData,
             setLoading: setLoading,
             errorMsg: "Failed to fetch user data!",
         })
-    }, [pagination.page, pagination.limit, searchQuery]);
+    }, [pagination.page, pagination.limit, searchQuery, kycFilter]);
 
     useEffect(() => {
         setPagination((prevPagination) => ({
             ...prevPagination,
-            totalPages: userData?.pagination?.totalPages,
-            hasPrevPage: userData?.pagination?.hasPrevPage,
-            hasNextPage: userData?.pagination?.hasNextPage,
+            totalPages: userData?.data?.totalPages,
+            hasPrevPage: userData?.data?.hasPrevPage,
+            hasNextPage: userData?.data?.hasNextPage,
         }));
     }, [userData]);
 
@@ -102,8 +103,8 @@ const AllUsers = () => {
                 loading={deleteLoading}
                 text="Delete"
             />
-            <div className="sm:mt-5 mt-2">
-                <div className='flex items-center justify-between mb-4 flex-wrap gap-2'>
+            <div className="sm:mt-3 mt-2">
+                <div className='flex items-center justify-between mb-2 flex-wrap gap-2'>
                     <div className='flex items-center gap-2 flex-wrap'>
                         <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-sm'>
                             <input
@@ -120,21 +121,47 @@ const AllUsers = () => {
                             className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
                             Search
                         </button>
-                        {/* <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            PDF
-                        </button>
-                        <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            CSV
-                        </button> */}
                     </div>
-                    {/* <div className='sm:flex items-center gap-2 hidden'>
-                        <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            PDF
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <button
+                            onClick={() => {
+                                setKycFilter("");
+                                setPagination((prev) => ({ ...prev, page: 1 }));
+                            }}
+                            className={`px-4 py-2 cursor-pointer rounded-full border text-sm font-semibold transition ${kycFilter === ""
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-primary/10"
+                                }`}
+                        >
+                            All
                         </button>
-                        <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            CSV
+                        <button
+                            onClick={() => {
+                                setKycFilter("true");
+                                setPagination((prev) => ({ ...prev, page: 1 }));
+                            }}
+                            className={`px-4 py-2 cursor-pointer rounded-full border text-sm font-semibold transition ${kycFilter === "true"
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-primary/10"
+                                }`}
+                        >
+                            Verified
                         </button>
-                    </div> */}
+                        <button
+                            onClick={() => {
+                                setKycFilter("false");
+                                setPagination((prev) => ({ ...prev, page: 1 }));
+                            }}
+                            className={`px-4 py-2 cursor-pointer rounded-full border text-sm font-semibold transition ${kycFilter === "false"
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-primary/10"
+                                }`}
+                        >
+                            Not Verified
+                        </button>
+                    </div>
+
+
                 </div>
                 <div className='overflow-x-auto'>
                     <table className="min-w-full border-collapse">
@@ -192,7 +219,21 @@ const AllUsers = () => {
                         </tbody>
                     </table>
                 </div>
+                {userData?.data?.docs?.length > 0 && (
+                    <Pagination
+                        currentPage={pagination.page}
+                        totalPages={pagination.totalPages}
+                        hasPrevPage={pagination.hasPrevPage}
+                        hasNextPage={pagination.hasNextPage}
+                        onPageChange={(newPage) => {
+                            setPagination((prev) => ({ ...prev, page: newPage }));
+                        }}
+                    />
+                )}
+
             </div>
+
+
         </DashbaordLayout>
     )
 }

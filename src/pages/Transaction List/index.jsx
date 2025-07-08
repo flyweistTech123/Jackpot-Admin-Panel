@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashbaordLayout from '../../components/DashbaordLayout'
 
-import { IoSearch } from "react-icons/io5";
-
 
 import { useNavigate } from 'react-router-dom';
 import { ConfirmModal } from '../../components/Modals/Modal';
 import endPoints from '../../Repository/apiConfig';
 import { deleteApi, getApi } from '../../Repository/Api';
 import { formatDate } from '../../utils/utils';
+import Pagination from '../../components/Pagination/Pagination';
 
 
 
@@ -42,9 +41,9 @@ const TransactionList = () => {
     useEffect(() => {
         setPagination((prevPagination) => ({
             ...prevPagination,
-            totalPages: transactionData?.pagination?.totalPages,
-            hasPrevPage: transactionData?.pagination?.hasPrevPage,
-            hasNextPage: transactionData?.pagination?.hasNextPage,
+            totalPages: transactionData?.data?.totalPages,
+            hasPrevPage: transactionData?.data?.hasPrevPage,
+            hasNextPage: transactionData?.data?.hasNextPage,
         }));
     }, [transactionData]);
 
@@ -99,40 +98,7 @@ const TransactionList = () => {
                 loading={deleteLoading}
                 text="Delete"
             />
-            <div className="sm:mt-5 mt-2">
-                {/* <div className='flex items-center justify-between mb-4 flex-wrap gap-2'>
-                    <div className='flex items-center gap-2 flex-wrap'>
-                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-min'>
-                            <input
-                                type="search"
-                                placeholder="Search by name or ID"
-                                value={search}
-                                onChange={handleSearchChange}
-                                className='flex-1 border-0 outline-0 font-urbanist placeholder:text-[15px] font-semibold placeholder:text-[#9EACBF]'
-                            />
-                            <IoSearch color='#000000' size={20} />
-                        </div>
-                        <button
-                            onClick={handleSearch}
-                            className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            Search
-                        </button>
-                        <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            PDF
-                        </button>
-                        <button className='sm:hidden bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            CSV
-                        </button>
-                    </div>
-                    <div className='sm:flex items-center gap-2 hidden'>
-                        <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            PDF
-                        </button>
-                        <button className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
-                            CSV
-                        </button>
-                    </div>
-                </div> */}
+            <div className="sm:mt-3 mt-2">
                 <div className='overflow-x-auto'>
                     <table className="min-w-full border-collapse">
                         <thead>
@@ -178,6 +144,17 @@ const TransactionList = () => {
                         </tbody>
                     </table>
                 </div>
+                {transactionData?.data?.docs?.length > 0 && (
+                    <Pagination
+                        currentPage={pagination.page}
+                        totalPages={pagination.totalPages}
+                        hasPrevPage={pagination.hasPrevPage}
+                        hasNextPage={pagination.hasNextPage}
+                        onPageChange={(newPage) => {
+                            setPagination((prev) => ({ ...prev, page: newPage }));
+                        }}
+                    />
+                )}
             </div>
         </DashbaordLayout>
     )

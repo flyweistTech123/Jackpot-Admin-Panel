@@ -26,8 +26,20 @@ const formatDate = (dateString) => {
     return `${day}/${month}/${year}`;
 };
 
+const buildQueryString = (query) => {
+    const params = new URLSearchParams();
+    Object.entries(query).forEach(([key, value]) => {
+        if (value) {
+            params.append(key, value);
+        }
+    });
+    return params.toString();
+};
+
+
 export {
     ScrollToTop,
-    formatDate
+    formatDate,
+    buildQueryString
 
 };

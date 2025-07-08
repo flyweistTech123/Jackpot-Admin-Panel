@@ -1,12 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashbaordLayout from '../../components/DashbaordLayout'
 
-import { IoSearch } from "react-icons/io5";
-import { PiEyeBold } from "react-icons/pi";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaCheck } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
+
 
 
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +11,7 @@ import { AddRuleModal, ConfirmModal } from '../../components/Modals/Modal';
 import endPoints from '../../Repository/apiConfig';
 import { deleteApi, getApi } from '../../Repository/Api';
 import { formatDate } from '../../utils/utils';
+import Pagination from '../../components/Pagination/Pagination';
 
 
 
@@ -29,6 +27,13 @@ const Rules = () => {
     const [showModal1, setShowModal1] = useState(false);
     const [ruleData, setRuleData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [pagination, setPagination] = useState({
+        limit: 10,
+        totalPages: 1,
+        page: 1,
+        hasPrevPage: false,
+        hasNextPage: false,
+    });
 
     const [itemToDelete, setItemToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -39,12 +44,21 @@ const Rules = () => {
 
     const fetchData = useCallback(async () => {
         setRuleData([])
-        await getApi(endPoints.getrules, {
+        await getApi(endPoints.getrules(pagination.page, pagination.limit), {
             setResponse: setRuleData,
             setLoading: setLoading,
             errorMsg: "Failed to fetch data!",
         })
-    }, []);
+    }, [pagination.page, pagination.limit]);
+
+    useEffect(() => {
+        setPagination((prevPagination) => ({
+            ...prevPagination,
+            totalPages: ruleData?.data?.totalPages,
+            hasPrevPage: ruleData?.data?.hasPrevPage,
+            hasNextPage: ruleData?.data?.hasNextPage,
+        }));
+    }, [ruleData]);
 
     useEffect(() => {
         fetchData();
@@ -108,7 +122,7 @@ const Rules = () => {
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <div className="sm:mt-5 mt-2">
+            <div className="sm:mt-3 mt-2">
                 <div className='overflow-x-auto'>
                     <table className="min-w-full border-collapse">
                         <thead>
@@ -132,18 +146,18 @@ const Rules = () => {
                                     </td>
                                 </tr>
                                 :
-                                (!ruleData?.data || ruleData?.data?.length === 0) ? (
+                                (!ruleData?.data || ruleData?.data?.docs?.length === 0) ? (
                                     <tr>
                                         <td colSpan="9" className='text-center'>
                                             <p className='font-urbanist text-md font-semibold text-[#0A0E15]'>No data available!</p>
                                         </td>
                                     </tr>
                                 ) :
-                                    ruleData?.data?.map((i, index) => (
+                                    ruleData?.data?.docs?.map((i, index) => (
                                         <tr key={index} className=" bg-white space-y-10 transition-all hover:bg-[#E1F7FF]">
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">{index + 1}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">
-                                                <img src={i.image} alt="" className='w-12 h-12 object-contain '/>
+                                                <img src={i.image} alt="" className='w-12 h-12 object-contain ' />
                                             </td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.title}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i.amount}</td>
@@ -165,6 +179,17 @@ const Rules = () => {
                         </tbody>
                     </table>
                 </div>
+                 {ruleData?.data?.docs?.length > 0 && (
+                    <Pagination
+                        currentPage={pagination.page}
+                        totalPages={pagination.totalPages}
+                        hasPrevPage={pagination.hasPrevPage}
+                        hasNextPage={pagination.hasNextPage}
+                        onPageChange={(newPage) => {
+                            setPagination((prev) => ({ ...prev, page: newPage }));
+                        }}
+                    />
+                )}
             </div>
         </DashbaordLayout>
     )

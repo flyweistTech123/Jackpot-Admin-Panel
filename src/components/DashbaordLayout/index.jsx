@@ -4,22 +4,10 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuUsersRound } from "react-icons/lu";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { MdOutlineCalendarToday } from "react-icons/md";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import { RiMoneyRupeeCircleLine } from "react-icons/ri";
-import { TiPen } from "react-icons/ti";
-import { MdOutlineCategory } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
-import { PiImageSquareBold } from "react-icons/pi";
-import { BiMoneyWithdraw } from "react-icons/bi";
-import { MdNotificationsNone } from "react-icons/md";
-import { MdOutlineBuild } from "react-icons/md";
-import { MdOutlineAutoStories } from "react-icons/md";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaHourglassHalf, } from "react-icons/fa";
 import { TbUserOff } from "react-icons/tb";
-import { MdOutlineLiveHelp } from "react-icons/md";
-import { MdOutlineLocalActivity } from "react-icons/md";
 import { MdOutlineRuleFolder } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { MdOutlinePrivacyTip } from "react-icons/md";
@@ -30,6 +18,15 @@ import { IoGameControllerOutline } from "react-icons/io5";
 import { FaRegBuilding } from "react-icons/fa";
 import { TiChartPieOutline } from "react-icons/ti";
 import { TiContacts } from "react-icons/ti";
+import { BiGame } from "react-icons/bi";
+import { CgWebsite } from "react-icons/cg";
+import { GoHome } from "react-icons/go";
+import { MdOutlineDeveloperMode } from "react-icons/md";
+import { GrGamepad } from "react-icons/gr";
+import { VscLaw } from "react-icons/vsc";
+import { PiOfficeChair } from "react-icons/pi";
+
+
 
 import img1 from '../../assets/images/logo.png'
 import img2 from '../../assets/images/Adviser1.png'
@@ -52,11 +49,11 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
   const navigate = useNavigate();
 
   const navItems = [
-    {
-      name: "Dashboard",
-      icon: MdOutlineDashboard,
-      path: "/dashboard"
-    },
+    // {
+    //   name: "Dashboard",
+    //   icon: MdOutlineDashboard,
+    //   path: "/dashboard"
+    // },
     {
       name: "User",
       icon: LuUsersRound,
@@ -68,19 +65,14 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       path: "/rules"
     },
     {
+      name: "Game Logs",
+      icon: BiGame,
+      path: "/game-logs"
+    },
+    {
       name: "Transaction List",
       icon: GrTransaction,
       path: "/transaction-list"
-    },
-    {
-      name: "Privacy Policy",
-      icon: MdOutlinePrivacyTip,
-      path: "/privacy-policy"
-    },
-    {
-      name: "Terms and Conditions",
-      icon: TbFileText,
-      path: "/terms-and-conditions"
     },
     {
       name: "Coin System",
@@ -103,11 +95,6 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       path: "/powered-by-company"
     },
     {
-      name: "Help And Support",
-      icon: BiSupport,
-      path: "/help-and-support"
-    },
-    {
       name: "RTP",
       icon: TiChartPieOutline,
       path: "/rtp"
@@ -118,145 +105,51 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       path: "/contact-details"
     },
     {
-      name: "Adviser",
-      icon: LiaChalkboardTeacherSolid,
-      path: "/adviser",
-      children: [
-        {
-          name: "Adviser List",
-          icon: LiaChalkboardTeacherSolid,
-          path: "/adviser/list"
-        },
-        {
-          name: "Pending Request",
-          icon: FaHourglassHalf,
-          path: "/adviser/pending"
-        },
-        {
-          name: "Suspended",
-          icon: TbUserOff,
-          path: "/adviser/suspended"
-        },
-      ],
-    },
-    {
-      name: "Appointment",
-      icon: MdOutlineCalendarToday,
-      path: "/appointment"
-    },
-    {
-      name: "Completed",
-      icon: IoMdCheckmarkCircleOutline,
-      path: "/completed-calls"
-    },
-    {
-      name: "Earning",
-      icon: RiMoneyRupeeCircleLine,
-      path: "/earning"
-    },
-    {
-      name: "Blogs",
-      icon: TiPen,
-      path: "/blog"
-    },
-    {
-      name: "Category",
-      icon: MdOutlineCategory,
-      path: "/category",
-      children: [
-        {
-          name: "Category",
-          icon: MdOutlineCategory,
-          path: "/category/list"
-        },
-        {
-          name: "Skills",
-          icon: MdOutlineLiveHelp,
-          path: "/category/skills"
-        },
-      ],
-    },
-    {
-      name: "Team Management",
+      name: "Help And Support",
       icon: BiSupport,
-      path: "/team-management",
+      path: "/help-and-support"
+    },
+    {
+      name: "Privacy Policy",
+      icon: MdOutlinePrivacyTip,
+      path: "/privacy-policy"
+    },
+    {
+      name: "Terms and Conditions",
+      icon: TbFileText,
+      path: "/terms-and-conditions"
+    },
+    {
+      name: "Website",
+      icon: CgWebsite,
+      path: "/website",
       children: [
         {
-          name: "Team List",
-          icon: MdOutlineLocalActivity,
-          path: "/team-management/list"
+          name: "Home Page",
+          icon: GoHome ,
+          path: "/website/home-page"
         },
         {
-          name: "Team Role",
-          icon: MdOutlineLiveHelp,
-          path: "/team-management/role"
+          name: "Developer Page",
+          icon: MdOutlineDeveloperMode,
+          path: "/website/developer-page"
+        },
+        {
+          name: "Game Page",
+          icon: GrGamepad,
+          path: "/website/game-page"
+        },
+        {
+          name: "Legal Page",
+          icon: VscLaw,
+          path: "/website/legal-page"
+        },
+        {
+          name: "Jobs Page",
+          icon: PiOfficeChair,
+          path: "/website/jobs-page"
         },
       ],
-    },
-    {
-      name: "Banner Management",
-      icon: PiImageSquareBold,
-      path: "/banner-management"
-    },
-    {
-      name: "Withdrawal",
-      icon: BiMoneyWithdraw,
-      path: "/withdrawal",
-      children: [
-        {
-          name: "Withdrawal Request ",
-          icon: MdOutlineLocalActivity,
-          path: "/withdrawal/request"
-        },
-        {
-          name: "Withdraw Method",
-          icon: MdOutlineLiveHelp,
-          path: "/withdrawal/method"
-        },
-        {
-          name: "Wallet History",
-          icon: MdOutlineLiveHelp,
-          path: "/withdrawal/history"
-        },
-      ],
-    },
-    {
-      name: "Notifications",
-      icon: MdNotificationsNone,
-      path: "/notification"
-    },
-    {
-      name: "Support Management",
-      icon: BiSupport,
-      path: "/support-management",
-      children: [
-        {
-          name: "Ticket",
-          icon: MdOutlineLocalActivity,
-          path: "/support-management/ticket"
-        },
-        {
-          name: "Faq",
-          icon: MdOutlineLiveHelp,
-          path: "/support-management/faq"
-        },
-        {
-          name: "Delete Request",
-          icon: MdOutlineLiveHelp,
-          path: "/support-management/delete-request"
-        },
-      ],
-
-    },
-    {
-      name: "General Setting",
-      icon: MdOutlineBuild,
-      path: "/general-setting"
-    },
-    {
-      name: "Page Management",
-      icon: MdOutlineAutoStories,
-      path: "/page-management"
     },
   ];
 

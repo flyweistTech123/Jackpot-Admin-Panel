@@ -1,13 +1,21 @@
+import { buildQueryString } from "../utils/utils";
+
 const endPoints = {
     loginAdmin: "admin/signin",
 
 
-    getallUser: (page, limit, search, status) =>
-        `admin/userList?page=${page}&limit=${limit}&search=${search ? search : ""}&isKyc=${status ? status : ""}`,
+    getallUser: (page, limit, search, kycFilter) =>
+        `admin/userList?page=${page}&limit=${limit}&search=${search ? search : ""}&isKyc=${kycFilter ? kycFilter : ""}`,
     getallTransactionlist: (page, limit, search, status) =>
         `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
 
-    getrules: "admin/allRule",
+  getallgameslogs: (query) => `admin/allPayoutList?${buildQueryString(query)}`,
+
+
+
+    getrules: (page, limit) =>
+        `admin/getRuleByAdmin?page=${page}&limit=${limit}`,
+
     getprivacypolicy: "static/getPrivacy",
     getTermsandConditions: "static/getTerms",
     getCoinSystem: "static/getCoinSystem",
@@ -17,6 +25,7 @@ const endPoints = {
     getHelpAndSupport: "static/getHelpAndSupport",
     getRTP: "user/getRtp",
     getContactDetails: "static/viewContactDetails",
+    getAllHomePage: "user/getAllHomePage",
 
 
 
