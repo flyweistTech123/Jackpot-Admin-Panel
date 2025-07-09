@@ -26,6 +26,7 @@ const endPoints = {
     getRTP: "user/getRtp",
     getContactDetails: "static/viewContactDetails",
     getAllHomePage: "user/getAllHomePage",
+    getAllCount: "admin/getDashboard",
 
 
 

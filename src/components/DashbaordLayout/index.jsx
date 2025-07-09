@@ -3,11 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { LuUsersRound } from "react-icons/lu";
-import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { BiSupport } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
-import { FaHourglassHalf, } from "react-icons/fa";
-import { TbUserOff } from "react-icons/tb";
 import { MdOutlineRuleFolder } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
 import { MdOutlinePrivacyTip } from "react-icons/md";
@@ -49,11 +46,11 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
   const navigate = useNavigate();
 
   const navItems = [
-    // {
-    //   name: "Dashboard",
-    //   icon: MdOutlineDashboard,
-    //   path: "/dashboard"
-    // },
+    {
+      name: "Dashboard",
+      icon: MdOutlineDashboard,
+      path: "/dashboard"
+    },
     {
       name: "User",
       icon: LuUsersRound,

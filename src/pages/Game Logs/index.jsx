@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import DashbaordLayout from '../../components/DashbaordLayout'
 
 import { FiEdit } from "react-icons/fi";

@@ -16,6 +16,7 @@ import Rtp from './pages/Rtp';
 import ContactDetails from './pages/Contact Details';
 import GameLogs from './pages/Game Logs';
 import HomePage from './pages/Website Management/Home Page';
+import UserDetails from './pages/User/UserDetails';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<AllUsers />} />
+          <Route path="/users/details/:id" element={<UserDetails />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/transaction-list" element={<TransactionList />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
