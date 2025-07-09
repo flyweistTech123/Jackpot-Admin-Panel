@@ -48,7 +48,7 @@ const Login = () => {
         }
 
         sessionStorage.setItem("token", response?.accessToken);
-        navigate('/users');
+        navigate('/dashboard');
       },
       setLoading,
       successMsg: "Login Successfully!",

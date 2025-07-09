@@ -15,7 +15,7 @@ import EngagingSlotPreview from './components/EngagingSlotPriview .jsx';
 import WhatYouGetPreview from './components/WhatYouGetPreview.jsx';
 import { AddEngagingSlotsModal, AddFeaturesBenefitsModal, AddGameCategoriesModal, AddHowItWorkModal, AddSecurityAndComplianceModal, AddSlotMasteryModal, AddWhatWeGetModal, ConfirmModal, EditFooterModal, EditHeroSectionModal } from '../../../components/Modals/Modal.jsx';
 
-const HomePage = () => {
+const DeveloperPage = () => {
     const [homepageData, setHomepageData] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
@@ -308,7 +308,7 @@ const HomePage = () => {
     const currentSection = sections.find(s => s.id === selectedSection);
 
     return (
-        <DashbaordLayout title="Home Page" hedartitle={`Website > Home Page`}>
+        <DashbaordLayout title="Developer Page" hedartitle={`Website > Developer Page`}>
             <AddHowItWorkModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
@@ -387,7 +387,7 @@ const HomePage = () => {
                         <div className="flex items-center justify-between h-16">
                             <div className="flex items-center">
                                 <Settings className="h-8 w-8 text-blue-600 mr-3" />
-                                <h1 className="sm:text-2xl text-lg font-bold text-gray-900">Home Page Content Management</h1>
+                                <h1 className="sm:text-2xl text-lg font-bold text-gray-900">Developer Page Content Management</h1>
                             </div>
                             <div className="flex items-center space-x-4">
                                 <span className="text-sm text-gray-500">Last updated: {new Date(data.updatedAt).toLocaleDateString()}</span>
@@ -399,8 +399,8 @@ const HomePage = () => {
                 {/* Main Content */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 py-5">
                     <div className="mb-5">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Home Page Sections</h2>
-                        <p className="text-gray-600">Manage and preview different sections of your website home page. Click on any section to expand, preview, or edit.</p>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Developer Page Sections</h2>
+                        <p className="text-gray-600">Manage and preview different sections of your website developer page. Click on any section to expand, preview, or edit.</p>
                     </div>
 
                     <div className="grid gap-4">
@@ -437,4 +437,4 @@ const HomePage = () => {
     );
 };
 
-export default HomePage;
+export default DeveloperPage;

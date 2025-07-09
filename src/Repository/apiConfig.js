@@ -9,7 +9,7 @@ const endPoints = {
     getallTransactionlist: (page, limit, search, status) =>
         `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
 
-  getallgameslogs: (query) => `admin/allPayoutList?${buildQueryString(query)}`,
+    getallgameslogs: (query) => `admin/allPayoutList?${buildQueryString(query)}`,
 
 
 
@@ -44,6 +44,15 @@ const endPoints = {
     addHelpAndSupport: "static/createHelpAndSupport",
     addrtp: "static/createOverAllGame",
     addContactDetails: "static/addContactDetails",
+    addHowItwork: "user/addDataInHomePage",
+    addSlotMasteryInHomePage: "user/addSlotMasteryInHomePage",
+    addMiddleDataInHomePage: "user/addMiddleDataInHomePage",
+    addEngagingSlotExperiencesInHomePage: "user/addEngagingSlotExperiencesInHomePage",
+    addWhatWeGetInHomePage: "user/addWhatWeGetInHomePage",
+    addSecurityAndComplianceInHomePage: "user/addSecurityAndComplianceInHomePage",
+    addGameCategoriesInHomePage: "user/addGameCategoriesInHomePage",
+    addFooterInHomePage: "user/addFooterInHomePage",
+    addHomePage: "user/createHomePage",
 
 
 
@@ -57,6 +66,21 @@ const endPoints = {
         `admin/User/${id}`,
     deleterole: (id) =>
         `admin/deleteRule/${id}`,
+
+    deleteHowitWorks: (id) =>
+        `user/deleteDataInHomePage/${id}`,
+    deleteSlotMastery: (id) =>
+        `user/deleteSlotMasteryInHomePage/${id}`,
+    deleteFeatures: (id) =>
+        `user/deleteMiddleDataInHomePage/${id}`,
+    deleteEngagingSlots: (id) =>
+        `user/deleteEngagingSlotExperiencesInHomePage/${id}`,
+     deletewhatWeGet: (id) =>
+        `user/deleteWhatWeGetInHomePage/${id}`,
+     deleteSecurityAndCompliance: (id) =>
+        `user/deleteSecurityAndComplianceInHomePage/${id}`,
+      deleteGameCategories: (id) =>
+        `user/deleteGameCategoriesInHomePage/${id}`,
 
 
 

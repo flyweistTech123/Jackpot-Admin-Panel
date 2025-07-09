@@ -17,6 +17,10 @@ import ContactDetails from './pages/Contact Details';
 import GameLogs from './pages/Game Logs';
 import HomePage from './pages/Website Management/Home Page';
 import UserDetails from './pages/User/UserDetails';
+import DeveloperPage from './pages/Website Management/Developer Page';
+import JobPage from './pages/Website Management/Jobs Page';
+import LegalPage from './pages/Website Management/Legal page';
+import GamePage from './pages/Website Management/Game Page';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -54,6 +58,10 @@ export default function App() {
           <Route path="/contact-details" element={<ContactDetails />} />
           <Route path="/game-logs" element={<GameLogs />} />
           <Route path="/website/home-page" element={<HomePage />} />
+          <Route path="/website/developer-page" element={<DeveloperPage />} />
+          <Route path="/website/jobs-page" element={<JobPage />} />
+          <Route path="/website/legal-page" element={<LegalPage />} />
+          <Route path="/website/game-page" element={<GamePage />} />
         </Routes>
       </Suspense>
     </Router>
