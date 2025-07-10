@@ -4,23 +4,13 @@ const HowItWorksPreview = ({ data, handleDelete }) => {
   return (
     <div className="bg-gradient-to-b from-black to-[#0A0E15] p-8 rounded-lg">
       <h2 className="text-3xl font-bold text-center mb-8 text-white">How It Works</h2>
-      <div className="flex flex-col gap-6 justify-center items-stretch">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-2 justify-center items-stretch">
         {data?.map((item) => (
           <div
             key={item?._id}
-            className="bg-green-900 text-white rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 w-full"
+            className="bg-green-900 text-white rounded-lg p-2 flex itmes-center gap-5"
           >
-            <div className="flex items-center gap-4">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-12 h-12 object-contain"
-              />
-              <div>
-                <h3 className="text-lg font-bold">{item.title}</h3>
-                <p className="text-sm">{item.description}</p>
-              </div>
-            </div>
+            <h3 className="text-lg font-bold">{item.title}</h3>
 
             {/* Delete button */}
             {handleDelete && (

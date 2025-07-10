@@ -10,7 +10,8 @@ const endPoints = {
         `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
 
     getallgameslogs: (query) => `admin/allPayoutList?${buildQueryString(query)}`,
-
+    getallJobList: (page, limit, search, departmentId, locationId, employmentTypeId) =>
+        `user/getAllJobs?page=${page}&limit=${limit}&search=${search ? search : ""}&departmentId=${departmentId ? departmentId : ""}&locationId=${locationId ? locationId : ""}&employmentTypeId=${employmentTypeId ? employmentTypeId : ""}`,
 
 
     getrules: (page, limit) =>
@@ -26,7 +27,13 @@ const endPoints = {
     getRTP: "user/getRtp",
     getContactDetails: "static/viewContactDetails",
     getAllHomePage: "user/getAllHomePage",
+    getAllDeveloperPage: "user/getAllDeveloperPage",
+    getAllGamePage: "user/getAllGamePage",
+    getAllLegalPage: "user/getAllLegalPage",
     getAllCount: "admin/getDashboard",
+    getAllDepartment: "user/getAllDepartment",
+    getAllLocation: "user/getAllLocation",
+    getAllEmploymentType: "user/getAllEmploymentType",
 
 
 
@@ -53,6 +60,17 @@ const endPoints = {
     addGameCategoriesInHomePage: "user/addGameCategoriesInHomePage",
     addFooterInHomePage: "user/addFooterInHomePage",
     addHomePage: "user/createHomePage",
+    addDeveloperPage: "user/createDeveloperPage",
+    addDataInDeveloperPage: "user/addDataInDeveloperPage",
+    addBannerDataInDeveloperPage: "user/addBannerDataInDeveloperPage",
+    addBenefitsDataInDeveloperPage: "user/addBenefitsDataInDeveloperPage",
+    addDeveloperCommunityInDeveloperPage: "user/addDeveloperCommunityInDeveloperPage",
+    addFooterInDeveloperPage: "user/addFooterInDeveloperPage",
+    addGamePage: "user/createGamePage",
+    addDataInGamePage: "user/addDataInGamePage",
+    addLegalPage: "user/createLegalPage",
+    addDataProtectionInLegalPage: "user/addDataProtectionInLegalPage",
+    addFooterInLegalPage: "user/addFooterInLegalPage",
 
 
 
@@ -75,12 +93,23 @@ const endPoints = {
         `user/deleteMiddleDataInHomePage/${id}`,
     deleteEngagingSlots: (id) =>
         `user/deleteEngagingSlotExperiencesInHomePage/${id}`,
-     deletewhatWeGet: (id) =>
+    deletewhatWeGet: (id) =>
         `user/deleteWhatWeGetInHomePage/${id}`,
-     deleteSecurityAndCompliance: (id) =>
+    deleteSecurityAndCompliance: (id) =>
         `user/deleteSecurityAndComplianceInHomePage/${id}`,
-      deleteGameCategories: (id) =>
+    deleteGameCategories: (id) =>
         `user/deleteGameCategoriesInHomePage/${id}`,
+
+    deleteHowitWorksDeveloper: (id) =>
+        `user/deleteDataInDeveloperPage/${id}`,
+    deleteBannerDataInDeveloperPage: (id) =>
+        `user/deleteBannerDataInDeveloperPage/${id}`,
+    deleteBenefitsDataInDeveloperPage: (id) =>
+        `user/deleteBenefitsDataInDeveloperPage/${id}`,
+    deleteDataInGamePage: (id) =>
+        `user/deleteDataInGamePage/${id}`,
+    deleteDataProtectionInLegalPage: (id) =>
+        `user/deleteDataProtectionInLegalPage/${id}`,
 
 
 

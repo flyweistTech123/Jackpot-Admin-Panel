@@ -1,440 +1,310 @@
-import React, { useEffect, useState } from 'react';
-import { getApi, postApi } from '../../../Repository/Api';
+import React, { useCallback, useEffect, useState } from 'react'
+import DashbaordLayout from '../../../components/DashbaordLayout'
+
+import { IoSearch } from "react-icons/io5";
+import { PiEyeBold } from "react-icons/pi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
+
+
+import { useNavigate } from 'react-router-dom';
+import { ConfirmModal } from '../../../components/Modals/Modal';
 import endPoints from '../../../Repository/apiConfig';
-import DashbaordLayout from '../../../components/DashbaordLayout';
+import { deleteApi, getApi } from '../../../Repository/Api';
+import Pagination from '../../../components/Pagination/Pagination';
 
-import { Settings, Layout, Users, Shield, Gamepad2, Trophy } from 'lucide-react';
-import SectionCard from './components/SectionCard.jsx';
-import PreviewModal from './components/PreviewModal.jsx';
-import HeroPreview from './components/HeroPreview.jsx';
-import HowItWorksPreview from './components/HowItWorksPreview.jsx';
-import FeaturesPreview from './components/FeaturesPreview.jsx';
-import SlotMasteryPreview from './components/SlotMasteryPreview.jsx';
-import FooterPreview from './components/FooterPreview.jsx';
-import EngagingSlotPreview from './components/EngagingSlotPriview .jsx';
-import WhatYouGetPreview from './components/WhatYouGetPreview.jsx';
-import { AddEngagingSlotsModal, AddFeaturesBenefitsModal, AddGameCategoriesModal, AddHowItWorkModal, AddSecurityAndComplianceModal, AddSlotMasteryModal, AddWhatWeGetModal, ConfirmModal, EditFooterModal, EditHeroSectionModal } from '../../../components/Modals/Modal.jsx';
 
-const JobPage = () => {
-    const [homepageData, setHomepageData] = useState({});
+const JobsPage = () => {
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [showModal1, setShowModal1] = useState(false);
-    const [showModal2, setShowModal2] = useState(false);
-    const [showModal3, setShowModal3] = useState(false);
-    const [showModal4, setShowModal4] = useState(false);
-    const [showModal5, setShowModal5] = useState(false);
-    const [showModal6, setShowModal6] = useState(false);
-    const [showModal7, setShowModal7] = useState(false);
-    const [showModal8, setShowModal8] = useState(false);
-    const [showModal9, setShowModal9] = useState(false);
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-
-
+    const [jobData, setJobData] = useState([]);
+    const [departmentData, setDepartmentData] = useState([]);
+    const [locationData, setLocationData] = useState([]);
+    const [employmentTypeData, setEmploymentTypeData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+    const [loading3, setLoading3] = useState(false);
+    const [search, setSearch] = useState('')
+    const [searchQuery, setSearchQuery] = useState("");
+    const [pagination, setPagination] = useState({
+        limit: 10,
+        totalPages: 1,
+        page: 1,
+        hasPrevPage: false,
+        hasNextPage: false,
+    });
     const [itemToDelete, setItemToDelete] = useState(null);
-    const [sectionToDelete, setSectionToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [kycFilter, setKycFilter] = useState("");
+    const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
+    const [selectedLocationId, setSelectedLocationId] = useState("");
+    const [selectedEmployeeTypeId, setSelectedEmployeeTypeId] = useState("");
 
 
-    const fetchData = () => {
-        getApi(endPoints.getAllHomePage, {
-            setResponse: (res) => setHomepageData(res?.data),
-            errorMsg: 'Failed to fetch homepage data',
-        });
+    const fetchData = useCallback(async () => {
+        setJobData([])
+        await getApi(endPoints.getallJobList(pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId), {
+            setResponse: setJobData,
+            setLoading: setLoading,
+            errorMsg: "Failed to fetch jobs data!",
+        })
+    }, [pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId]);
+
+    useEffect(() => {
+        setPagination((prevPagination) => ({
+            ...prevPagination,
+            totalPages: jobData?.data?.totalPages,
+            hasPrevPage: jobData?.data?.hasPrevPage,
+            hasNextPage: jobData?.data?.hasNextPage,
+        }));
+    }, [jobData]);
+
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+
+        if (value === "") {
+            setSearchQuery("");
+            setPagination((prev) => ({ ...prev, page: 1 }));
+        }
+    };
+
+    const handleSearch = () => {
+        setSearchQuery(search);
+        setPagination((prev) => ({ ...prev, page: 1 }));
     };
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
+
+    const handleConfirm = async () => {
+        if (!itemToDelete) return;
+        await deleteApi(endPoints.deleteuser(itemToDelete), {
+            setLoading: setDeleteLoading,
+            successMsg: "Job deleted successfully!",
+            errorMsg: "Failed to delete job!",
+            additionalFunctions: [
+                () => setShowModal(false),
+                () => fetchData(),
+            ],
+        });
+    };
 
 
-
-    const [expandedSection, setExpandedSection] = useState(null);
-    const [previewModalOpen, setPreviewModalOpen] = useState(false);
-    const [selectedSection, setSelectedSection] = useState('');
-
-    const data = homepageData || {};
-
-
-    const openHowItWorksAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
+    const handleDeleteClick = (id) => {
+        setItemToDelete(id);
         setShowModal(true);
     };
 
-    const openSlotMasteryAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal2(true);
-    };
 
+    const fetchDepartmentData = useCallback(async () => {
+        setDepartmentData([])
+        await getApi(endPoints.getAllDepartment, {
+            setResponse: setDepartmentData,
+            setLoading: setLoading1,
+            errorMsg: "Failed to fetch department data!",
+        })
+    }, []);
+    const fetchLocationData = useCallback(async () => {
+        setLocationData([])
+        await getApi(endPoints.getAllLocation, {
+            setResponse: setLocationData,
+            setLoading: setLoading2,
+            errorMsg: "Failed to fetch location data!",
+        })
+    }, []);
+    const fetchEmploymentTypeData = useCallback(async () => {
+        setEmploymentTypeData([])
+        await getApi(endPoints.getAllEmploymentType, {
+            setResponse: setEmploymentTypeData,
+            setLoading: setLoading3,
+            errorMsg: "Failed to fetch employee type data!",
+        })
+    }, []);
 
-    const openFeaturesBenefitsAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal3(true);
-    };
+    useEffect(() => {
+        fetchDepartmentData();
+        fetchLocationData();
+        fetchEmploymentTypeData();
+    }, [fetchDepartmentData, fetchLocationData, fetchEmploymentTypeData]);
 
-    const openEngagingSlotsAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal4(true);
-    };
-
-    const openWhatWeGetAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal5(true);
-    };
-
-    const openSecurityAndComplianceAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal6(true);
-    };
-
-    const openFooterEditModal = (item) => {
-        setSelectedItem(item);
-        setIsEditMode(true);
-        setShowModal8(true);
-    };
-
-    const openHeroEditModal = (item) => {
-        setSelectedItem(item);
-        setIsEditMode(true);
-        setShowModal9(true);
-    };
-
-    const openGameCategoriesAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal7(true);
-    };
-
-
-
-
-    const handleDeleteConfirm = async () => {
-        if (!itemToDelete || !sectionToDelete) return;
-
-        let endpoint = '';
-
-        switch (sectionToDelete) {
-            case 'howItWorks':
-                endpoint = endPoints.deleteHowitWorks(itemToDelete);
-                break;
-            case 'slotMastery':
-                endpoint = endPoints.deleteSlotMastery(itemToDelete);
-                break;
-            case 'features':
-                endpoint = endPoints.deleteFeatures(itemToDelete);
-                break;
-            case 'engagingSlots':
-                endpoint = endPoints.deleteEngagingSlots(itemToDelete);
-                break;
-            case 'whatWeGet':
-                endpoint = endPoints.deletewhatWeGet(itemToDelete);
-                break;
-            case 'security':
-                endpoint = endPoints.deleteSecurityAndCompliance(itemToDelete);
-                break;
-            case 'gameCategories':
-                endpoint = endPoints.deleteGameCategories(itemToDelete);
-                break;
-            // ✅ add more sections here as needed:
-            // case 'engagingSlots':
-            //   endpoint = endPoints.deleteEngagingSlot(itemToDelete);
-            //   break;
-            default:
-                console.error('Unknown section:', sectionToDelete);
-                return;
-        }
-
-        await postApi(endpoint, {
-            setLoading: setDeleteLoading,
-            successMsg: 'Item deleted successfully!',
-            errorMsg: 'Failed to delete item!',
-        });
-        setShowModal1(false)
-        setItemToDelete(null);
-        setSectionToDelete(null);
-        fetchData()
-    };
-
-
-
-    const handleDeleteClick = (section, id) => {
-        setItemToDelete(id);
-        setSectionToDelete(section);
-        setShowModal1(true);
-    };
-
-
-
-
-
-    const sections = [
-        {
-            id: 'hero',
-            title: 'Hero Section',
-            description: 'Main landing area with title, image, and call-to-action button',
-            itemCount: 1,
-            icon: <Layout size={20} />,
-            component: <HeroPreview data={data} />,
-            onEdit: () => openHeroEditModal(data)
-        },
-        {
-            id: 'howItWorks',
-            title: 'How It Works',
-            description: 'Step-by-step process showing how users can get started',
-            itemCount: data?.data?.length,
-            icon: <Users size={20} />,
-            component: (
-                <HowItWorksPreview
-                    data={data?.data}
-                    handleDelete={(id) => handleDeleteClick('howItWorks', id)}
-                />
-            ),
-            openModal: openHowItWorksAddModal
-        },
-        {
-            id: 'slotMastery',
-            title: 'Slot Mastery',
-            description: 'Detailed information about slot gaming features and systems',
-            itemCount: data?.slotMastery?.length,
-            icon: <Gamepad2 size={20} />,
-            component: (
-                <SlotMasteryPreview
-                    data={data?.slotMastery}
-                    handleDelete={(id) => handleDeleteClick('slotMastery', id)}
-                />
-            ),
-            openModal: openSlotMasteryAddModal
-        },
-        {
-            id: 'features',
-            title: 'Features & Benefits',
-            description: 'Core features and benefits of the platform',
-            itemCount: data?.middleData?.length,
-            icon: <Trophy size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.middleData}
-                    title={data.middleTitle}
-                    handleDelete={(id) => handleDeleteClick('features', id)}
-                />
-            ),
-            openModal: openFeaturesBenefitsAddModal
-        },
-        {
-            id: 'engagingSlots',
-            title: 'Engaging Slot Experiences',
-            description: 'Showcase of different slot gaming experiences available',
-            itemCount: data?.engagingSlotExperiences?.length,
-            icon: <Gamepad2 size={20} />,
-            component: (
-                <EngagingSlotPreview
-                    data={data?.engagingSlotExperiences?.map(item => ({ ...item, image: item?.image }))}
-                    title={data.engagingSlotExperiencesTitle}
-                    handleDelete={(id) => handleDeleteClick('engagingSlots', id)}
-                />
-            ),
-            openModal: openEngagingSlotsAddModal
-        },
-        {
-            id: 'whatWeGet',
-            title: 'What We Get',
-            description: 'List of benefits and services provided to clients',
-            itemCount: data?.whatWeGet?.length,
-            icon: <Settings size={20} />,
-            component: (
-                <WhatYouGetPreview
-                    data={data?.whatWeGet}
-                    title={data.whatWeGetTitle}
-                    handleDelete={(id) => handleDeleteClick('whatWeGet', id)}
-                />
-            ),
-            openModal: openWhatWeGetAddModal
-        },
-        {
-            id: 'security',
-            title: 'Security & Compliance',
-            description: 'Security measures and compliance features',
-            itemCount: data?.securityAndCompliance?.length,
-            icon: <Shield size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.securityAndCompliance}
-                    title={data?.securityAndComplianceTitle}
-                    handleDelete={(id) => handleDeleteClick('security', id)}
-                />
-            ),
-            openModal: openSecurityAndComplianceAddModal
-        },
-        {
-            id: 'gameCategories',
-            title: 'Game Categories',
-            description: 'Different categories of games available on the platform',
-            itemCount: data?.gameCategories?.length,
-            icon: <Gamepad2 size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.gameCategories}
-                    title={data?.gameCategoriesTitle}
-                    handleDelete={(id) => handleDeleteClick('gameCategories', id)}
-                />
-            ),
-            openModal: openGameCategoriesAddModal
-        },
-        {
-            id: 'footer',
-            title: 'Footer Section',
-            description: 'Footer call-to-action with demo booking functionality',
-            itemCount: 1,
-            icon: <Layout size={20} />,
-            component: <FooterPreview data={data} />,
-            onEdit: () => openFooterEditModal(data)
-        }
-    ];
-
-    const handlePreview = (sectionId) => {
-        setSelectedSection(sectionId);
-        setPreviewModalOpen(true);
-    };
-
-    const handleToggle = (sectionId) => {
-        setExpandedSection(expandedSection === sectionId ? null : sectionId);
-    };
-    const currentSection = sections.find(s => s.id === selectedSection);
 
     return (
-        <DashbaordLayout title="Job Page" hedartitle={`Website > Job Page`}>
-            <AddHowItWorkModal
+        <DashbaordLayout title="All Jobs"
+            hedartitle="All Jobs"
+        >
+            <ConfirmModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddSlotMasteryModal
-                isOpen={showModal2}
-                onClose={() => setShowModal2(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddFeaturesBenefitsModal
-                isOpen={showModal3}
-                onClose={() => setShowModal3(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddEngagingSlotsModal
-                isOpen={showModal4}
-                onClose={() => setShowModal4(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddWhatWeGetModal
-                isOpen={showModal5}
-                onClose={() => setShowModal5(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddSecurityAndComplianceModal
-                isOpen={showModal6}
-                onClose={() => setShowModal6(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <AddGameCategoriesModal
-                isOpen={showModal7}
-                onClose={() => setShowModal7(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <EditFooterModal
-                isOpen={showModal8}
-                onClose={() => setShowModal8(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <EditHeroSectionModal
-                isOpen={showModal9}
-                onClose={() => setShowModal9(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <ConfirmModal
-                isOpen={showModal1}
-                onClose={() => setShowModal1(false)}
-                onConfirm={handleDeleteConfirm}
+                onConfirm={handleConfirm}
                 loading={deleteLoading}
                 text="Delete"
             />
-
-            <div className="min-h-screen bg-gray-100 mt-3">
-                {/* Header */}
-                <div className="bg-white shadow-sm border-b">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
-                        <div className="flex items-center justify-between h-16">
-                            <div className="flex items-center">
-                                <Settings className="h-8 w-8 text-blue-600 mr-3" />
-                                <h1 className="sm:text-2xl text-lg font-bold text-gray-900">Job Page Content Management</h1>
-                            </div>
-                            <div className="flex items-center space-x-4">
-                                <span className="text-sm text-gray-500">Last updated: {new Date(data.updatedAt).toLocaleDateString()}</span>
-                            </div>
+            <div className="sm:mt-3 mt-2">
+                <div className='flex items-center justify-between mb-2 flex-wrap gap-2'>
+                    <div className='flex items-center gap-2 flex-wrap'>
+                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-sm'>
+                            <input
+                                type="search"
+                                placeholder="Search by job title"
+                                value={search}
+                                onChange={handleSearchChange}
+                                className='flex-1 border-0 outline-0 font-urbanist placeholder:text-[15px] font-semibold placeholder:text-[#9EACBF]'
+                            />
+                            <IoSearch color='#000000' size={20} />
                         </div>
+                        <button
+                            onClick={handleSearch}
+                            className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                            Search
+                        </button>
                     </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <select
+                            value={selectedDepartmentId}
+                            onChange={(e) => setSelectedDepartmentId(e.target.value)}
+                            className="bg-white border px-4 py-2 rounded-md text-sm"
+                        >
+                            <option value="">
+                                {loading1
+                                    ? "Loading departments..."
+                                    : departmentData?.data?.length === 0
+                                        ? "No departments found"
+                                        : "Select Department"}
+                            </option>
+
+                            {!loading1 && departmentData?.data?.length > 0 &&
+                                departmentData?.data?.map((dept) => (
+                                    <option key={dept._id} value={dept._id}>
+                                        {dept.title}
+                                    </option>
+                                ))
+                            }
+                        </select>
+
+                        <select
+                            value={selectedLocationId}
+                            onChange={(e) => setSelectedLocationId(e.target.value)}
+                            className="bg-white border px-4 py-2 rounded-md text-sm"
+                        >
+                            <option value="">
+                                {loading2
+                                    ? "Loading locations..."
+                                    : locationData?.data?.length === 0
+                                        ? "No location found"
+                                        : "Select Location"}
+                            </option>
+
+                            {!loading2 && locationData?.data?.length > 0 &&
+                                locationData?.data?.map((dept) => (
+                                    <option key={dept._id} value={dept._id}>
+                                        {dept.title}
+                                    </option>
+                                ))
+                            }
+                        </select>
+                        <select
+                            value={selectedEmployeeTypeId}
+                            onChange={(e) => setSelectedEmployeeTypeId(e.target.value)}
+                            className="bg-white border px-4 py-2 rounded-md text-sm"
+                        >
+                            <option value="">
+                                {loading3
+                                    ? "Loading employmentType..."
+                                    : employmentTypeData?.data?.length === 0
+                                        ? "No employment type  found"
+                                        : "Select Employment Type"}
+                            </option>
+
+                            {!loading3 && employmentTypeData?.data?.length > 0 &&
+                                employmentTypeData?.data?.map((dept) => (
+                                    <option key={dept._id} value={dept._id}>
+                                        {dept.title}
+                                    </option>
+                                ))
+                            }
+                        </select>
+
+                    </div>
+
+
                 </div>
-
-                {/* Main Content */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 py-5">
-                    <div className="mb-5">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Job Page Sections</h2>
-                        <p className="text-gray-600">Manage and preview different sections of your website job page. Click on any section to expand, preview, or edit.</p>
-                    </div>
-
-                    <div className="grid gap-4">
-                        {sections.map((section) => (
-                            <SectionCard
-                                key={section.id}
-                                title={section?.title}
-                                description={section.description}
-                                itemCount={section.itemCount}
-                                onPreview={() => handlePreview(section.id)}
-                                isExpanded={expandedSection === section.id}
-                                onToggle={() => handleToggle(section.id)}
-                                openAddModal={section.openModal}
-                                onEdit={section.onEdit}
-                            >
-                                {section.component}
-                            </SectionCard>
-                        ))}
-                    </div>
+                <div className='overflow-x-auto'>
+                    <table className="min-w-full border-collapse">
+                        <thead>
+                            <tr className="bg-white text-left font-urbanist text-md font-semibold text-[#0A0E15]">
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[10px] rounded-bl-[10px]">#</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Job Title</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Type Of Job</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Remote</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Location</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Employment Type</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Department</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tr-[10px] rounded-br-[10px]">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody className="font-manrope text-[15px] font-[400] text-[#000000]">
+                            {loading ?
+                                <tr>
+                                    <td colSpan="9">
+                                        <div className="text-center">
+                                            <div className="w-16 h-16 border-4 border-[#FFB000] border-t-transparent rounded-full animate-spin mx-auto"></div>
+                                            <p className="mt-4 text-[#0A0E15] font-[600]">Loading...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                :
+                                (!jobData?.data || jobData?.data?.length === 0) ? (
+                                    <tr>
+                                        <td colSpan="9" className='text-center'>
+                                            <p className='font-urbanist text-md font-semibold text-[#0A0E15]'>No jobs found!</p>
+                                        </td>
+                                    </tr>
+                                ) :
+                                    jobData?.data?.map((i, index) => (
+                                        <tr key={index} className=" bg-white space-y-10 transition-all hover:bg-[#E1F7FF]">
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">{index + 1}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.title}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.typeOfJob}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.remote}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.locationId?.title}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.employmentTypeId?.title}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.departmentId?.title}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
+                                                <div className="flex items-center gap-2">
+                                                    <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
+                                                        <PiEyeBold color='#FFB000' size={20} />
+                                                    </button>
+                                                    <button onClick={() => handleDeleteClick(i?._id)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#C23A3A] flex items-center gap-1">
+                                                        <RiDeleteBin6Line color='#C23A3A' size={20} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                        </tbody>
+                    </table>
                 </div>
+                {jobData?.data?.docs?.length > 0 && (
+                    <Pagination
+                        currentPage={pagination.page}
+                        totalPages={pagination.totalPages}
+                        hasPrevPage={pagination.hasPrevPage}
+                        hasNextPage={pagination.hasNextPage}
+                        onPageChange={(newPage) => {
+                            setPagination((prev) => ({ ...prev, page: newPage }));
+                        }}
+                    />
+                )}
 
-
-
-                {/* Preview Modal */}
-                <PreviewModal
-                    isOpen={previewModalOpen}
-                    onClose={() => setPreviewModalOpen(false)}
-                    title={currentSection?.title || 'Section'}
-                >
-                    {currentSection?.component}
-                </PreviewModal>
             </div>
-        </DashbaordLayout>
-    );
-};
 
-export default JobPage;
+
+        </DashbaordLayout>
+    )
+}
+
+export default JobsPage

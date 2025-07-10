@@ -1,6 +1,6 @@
 import { Trash2 } from 'lucide-react';
 
-const EngagingSlotPreview = ({ data, title, handleDelete }) => {
+const BenefitsPreview = ({ data, title, handleDelete }) => {
     return (
         <div className="bg-gradient-to-b from-black to-[#0A0E15] p-8 rounded-lg">
             <h2 className="text-4xl font-bold mb-8 text-white text-center">
@@ -41,4 +41,4 @@ const EngagingSlotPreview = ({ data, title, handleDelete }) => {
     );
 };
 
-export default EngagingSlotPreview;
+export default BenefitsPreview;

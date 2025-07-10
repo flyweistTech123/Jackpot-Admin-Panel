@@ -1,6 +1,6 @@
 import { Trash2 } from 'lucide-react';
 
-const SlotMasteryPreview = ({ data, handleDelete }) => {
+const BannerDataPreview = ({ data, handleDelete }) => {
   return (
     <div className="bg-gradient-to-b from-black to-[#0A0E15] p-8 rounded-lg">
       <div className="max-w-6xl mx-auto">
@@ -26,7 +26,7 @@ const SlotMasteryPreview = ({ data, handleDelete }) => {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full rounded-lg shadow-lg"
+                  className="w-full max-w-[400px] rounded-lg shadow-lg"
                 />
               </div>
             </div>
@@ -37,4 +37,4 @@ const SlotMasteryPreview = ({ data, handleDelete }) => {
   );
 };
 
-export default SlotMasteryPreview;
+export default BannerDataPreview;

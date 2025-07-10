@@ -3,17 +3,16 @@ import { getApi, postApi } from '../../../Repository/Api';
 import endPoints from '../../../Repository/apiConfig';
 import DashbaordLayout from '../../../components/DashbaordLayout';
 
-import { Settings, Layout, Users, Shield, Gamepad2, Trophy } from 'lucide-react';
+import { Settings, Layout, Users, Gamepad2 } from 'lucide-react';
 import SectionCard from './components/SectionCard.jsx';
 import PreviewModal from './components/PreviewModal.jsx';
 import HeroPreview from './components/HeroPreview.jsx';
 import HowItWorksPreview from './components/HowItWorksPreview.jsx';
-import FeaturesPreview from './components/FeaturesPreview.jsx';
-import SlotMasteryPreview from './components/SlotMasteryPreview.jsx';
 import FooterPreview from './components/FooterPreview.jsx';
-import EngagingSlotPreview from './components/EngagingSlotPriview .jsx';
-import WhatYouGetPreview from './components/WhatYouGetPreview.jsx';
-import { AddEngagingSlotsModal, AddFeaturesBenefitsModal, AddGameCategoriesModal, AddHowItWorkModal, AddSecurityAndComplianceModal, AddSlotMasteryModal, AddWhatWeGetModal, ConfirmModal, EditFooterModal, EditHeroSectionModal } from '../../../components/Modals/Modal.jsx';
+import { AddDataInDeveloperPage, AddBannerDataModal, ConfirmModal, EditFooterDeveloperModal, EditHeroSectionDeveloperPageModal, AddBenefitsDataModal, EditaDeveloperCommunityModal } from '../../../components/Modals/Modal.jsx';
+import DeveloperCommunityPriview from './components/DeveloperCommunityPriview.jsx';
+import BannerDataPreview from './components/BannerDataPreview.jsx';
+import BenefitsPreview from './components/BenefitsPreview.jsx';
 
 const DeveloperPage = () => {
     const [homepageData, setHomepageData] = useState({});
@@ -24,9 +23,6 @@ const DeveloperPage = () => {
     const [showModal4, setShowModal4] = useState(false);
     const [showModal5, setShowModal5] = useState(false);
     const [showModal6, setShowModal6] = useState(false);
-    const [showModal7, setShowModal7] = useState(false);
-    const [showModal8, setShowModal8] = useState(false);
-    const [showModal9, setShowModal9] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -37,7 +33,7 @@ const DeveloperPage = () => {
 
 
     const fetchData = () => {
-        getApi(endPoints.getAllHomePage, {
+        getApi(endPoints.getAllDeveloperPage, {
             setResponse: (res) => setHomepageData(res?.data),
             errorMsg: 'Failed to fetch homepage data',
         });
@@ -56,61 +52,42 @@ const DeveloperPage = () => {
     const data = homepageData || {};
 
 
-    const openHowItWorksAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal(true);
+
+    const openHeroEditModal = (item) => {
+        setSelectedItem(item);
+        setIsEditMode(true);
+        setShowModal1(true);
     };
 
-    const openSlotMasteryAddModal = () => {
+    const openHowItWorksAddModal = () => {
         setSelectedItem(null);
         setIsEditMode(false);
         setShowModal2(true);
     };
 
-
-    const openFeaturesBenefitsAddModal = () => {
+    const openBannerDataAddModal = () => {
         setSelectedItem(null);
         setIsEditMode(false);
         setShowModal3(true);
     };
 
-    const openEngagingSlotsAddModal = () => {
+    const openBenefitsDataAddModal = () => {
         setSelectedItem(null);
         setIsEditMode(false);
         setShowModal4(true);
     };
 
-    const openWhatWeGetAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
+    const openDeveloperCommunityModalEditModal = (item) => {
+        setSelectedItem(item);
+        setIsEditMode(true);
         setShowModal5(true);
-    };
-
-    const openSecurityAndComplianceAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal6(true);
     };
 
     const openFooterEditModal = (item) => {
         setSelectedItem(item);
         setIsEditMode(true);
-        setShowModal8(true);
+        setShowModal6(true);
     };
-
-    const openHeroEditModal = (item) => {
-        setSelectedItem(item);
-        setIsEditMode(true);
-        setShowModal9(true);
-    };
-
-    const openGameCategoriesAddModal = () => {
-        setSelectedItem(null);
-        setIsEditMode(false);
-        setShowModal7(true);
-    };
-
 
 
 
@@ -121,30 +98,16 @@ const DeveloperPage = () => {
 
         switch (sectionToDelete) {
             case 'howItWorks':
-                endpoint = endPoints.deleteHowitWorks(itemToDelete);
+                endpoint = endPoints.deleteHowitWorksDeveloper(itemToDelete);
                 break;
-            case 'slotMastery':
-                endpoint = endPoints.deleteSlotMastery(itemToDelete);
+            case 'bannerData':
+                endpoint = endPoints.deleteBannerDataInDeveloperPage(itemToDelete);
                 break;
-            case 'features':
-                endpoint = endPoints.deleteFeatures(itemToDelete);
+            case 'benefits':
+                endpoint = endPoints.deleteBenefitsDataInDeveloperPage(itemToDelete);
                 break;
-            case 'engagingSlots':
-                endpoint = endPoints.deleteEngagingSlots(itemToDelete);
-                break;
-            case 'whatWeGet':
-                endpoint = endPoints.deletewhatWeGet(itemToDelete);
-                break;
-            case 'security':
-                endpoint = endPoints.deleteSecurityAndCompliance(itemToDelete);
-                break;
-            case 'gameCategories':
                 endpoint = endPoints.deleteGameCategories(itemToDelete);
                 break;
-            // ✅ add more sections here as needed:
-            // case 'engagingSlots':
-            //   endpoint = endPoints.deleteEngagingSlot(itemToDelete);
-            //   break;
             default:
                 console.error('Unknown section:', sectionToDelete);
                 return;
@@ -155,7 +118,7 @@ const DeveloperPage = () => {
             successMsg: 'Item deleted successfully!',
             errorMsg: 'Failed to delete item!',
         });
-        setShowModal1(false)
+        setShowModal(false)
         setItemToDelete(null);
         setSectionToDelete(null);
         fetchData()
@@ -166,7 +129,7 @@ const DeveloperPage = () => {
     const handleDeleteClick = (section, id) => {
         setItemToDelete(id);
         setSectionToDelete(section);
-        setShowModal1(true);
+        setShowModal(true);
     };
 
 
@@ -177,7 +140,7 @@ const DeveloperPage = () => {
         {
             id: 'hero',
             title: 'Hero Section',
-            description: 'Main landing area with title, image, and call-to-action button',
+            description: 'The main landing section with a headline, image, and call-to-action button.',
             itemCount: 1,
             icon: <Layout size={20} />,
             component: <HeroPreview data={data} />,
@@ -186,7 +149,7 @@ const DeveloperPage = () => {
         {
             id: 'howItWorks',
             title: 'How It Works',
-            description: 'Step-by-step process showing how users can get started',
+            description: 'A step-by-step walkthrough explaining how the platform works.',
             itemCount: data?.data?.length,
             icon: <Users size={20} />,
             component: (
@@ -198,104 +161,54 @@ const DeveloperPage = () => {
             openModal: openHowItWorksAddModal
         },
         {
-            id: 'slotMastery',
-            title: 'Slot Mastery',
-            description: 'Detailed information about slot gaming features and systems',
-            itemCount: data?.slotMastery?.length,
+            id: 'bannerData',
+            title: 'Banner Data',
+            description: 'Highlights key gaming features and systems with engaging banners.',
+            itemCount: data?.bannerData?.length,
             icon: <Gamepad2 size={20} />,
             component: (
-                <SlotMasteryPreview
-                    data={data?.slotMastery}
-                    handleDelete={(id) => handleDeleteClick('slotMastery', id)}
+                <BannerDataPreview
+                    data={data?.bannerData}
+                    handleDelete={(id) => handleDeleteClick('bannerData', id)}
                 />
             ),
-            openModal: openSlotMasteryAddModal
+            openModal: openBannerDataAddModal
         },
         {
-            id: 'features',
-            title: 'Features & Benefits',
-            description: 'Core features and benefits of the platform',
-            itemCount: data?.middleData?.length,
-            icon: <Trophy size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.middleData}
-                    title={data.middleTitle}
-                    handleDelete={(id) => handleDeleteClick('features', id)}
-                />
-            ),
-            openModal: openFeaturesBenefitsAddModal
-        },
-        {
-            id: 'engagingSlots',
-            title: 'Engaging Slot Experiences',
-            description: 'Showcase of different slot gaming experiences available',
-            itemCount: data?.engagingSlotExperiences?.length,
+            id: 'benefits',
+            title: 'Benefits',
+            description: 'Showcases the unique benefits and advantages of the gaming experience.',
+            itemCount: data?.benefitsData?.length,
             icon: <Gamepad2 size={20} />,
             component: (
-                <EngagingSlotPreview
-                    data={data?.engagingSlotExperiences?.map(item => ({ ...item, image: item?.image }))}
-                    title={data.engagingSlotExperiencesTitle}
-                    handleDelete={(id) => handleDeleteClick('engagingSlots', id)}
+                <BenefitsPreview
+                    data={data?.benefitsData?.map(item => ({ ...item, image: item?.image }))}
+                    title={data.benefitsTitle}
+                    handleDelete={(id) => handleDeleteClick('benefits', id)}
                 />
             ),
-            openModal: openEngagingSlotsAddModal
+            openModal: openBenefitsDataAddModal
         },
         {
-            id: 'whatWeGet',
-            title: 'What We Get',
-            description: 'List of benefits and services provided to clients',
-            itemCount: data?.whatWeGet?.length,
-            icon: <Settings size={20} />,
-            component: (
-                <WhatYouGetPreview
-                    data={data?.whatWeGet}
-                    title={data.whatWeGetTitle}
-                    handleDelete={(id) => handleDeleteClick('whatWeGet', id)}
-                />
-            ),
-            openModal: openWhatWeGetAddModal
-        },
-        {
-            id: 'security',
-            title: 'Security & Compliance',
-            description: 'Security measures and compliance features',
-            itemCount: data?.securityAndCompliance?.length,
-            icon: <Shield size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.securityAndCompliance}
-                    title={data?.securityAndComplianceTitle}
-                    handleDelete={(id) => handleDeleteClick('security', id)}
-                />
-            ),
-            openModal: openSecurityAndComplianceAddModal
-        },
-        {
-            id: 'gameCategories',
-            title: 'Game Categories',
-            description: 'Different categories of games available on the platform',
-            itemCount: data?.gameCategories?.length,
-            icon: <Gamepad2 size={20} />,
-            component: (
-                <FeaturesPreview
-                    data={data?.gameCategories}
-                    title={data?.gameCategoriesTitle}
-                    handleDelete={(id) => handleDeleteClick('gameCategories', id)}
-                />
-            ),
-            openModal: openGameCategoriesAddModal
+            id: 'developerCommunity',
+            title: 'Developer Community',
+            description: 'A section to engage developers and encourage them to join the community.',
+            itemCount: 1,
+            icon: <Layout size={20} />,
+            component: <DeveloperCommunityPriview data={data} />,
+            onEdit: () => openDeveloperCommunityModalEditModal(data)
         },
         {
             id: 'footer',
             title: 'Footer Section',
-            description: 'Footer call-to-action with demo booking functionality',
+            description: 'The footer area with contact details and demo booking options.',
             itemCount: 1,
             icon: <Layout size={20} />,
             component: <FooterPreview data={data} />,
             onEdit: () => openFooterEditModal(data)
         }
     ];
+
 
     const handlePreview = (sectionId) => {
         setSelectedSection(sectionId);
@@ -309,76 +222,57 @@ const DeveloperPage = () => {
 
     return (
         <DashbaordLayout title="Developer Page" hedartitle={`Website > Developer Page`}>
-            <AddHowItWorkModal
+            <ConfirmModal
                 isOpen={showModal}
                 onClose={() => setShowModal(false)}
+                onConfirm={handleDeleteConfirm}
+                loading={deleteLoading}
+                text="Delete"
+            />
+            <EditHeroSectionDeveloperPageModal
+                isOpen={showModal1}
+                onClose={() => setShowModal1(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddSlotMasteryModal
+            <AddDataInDeveloperPage
                 isOpen={showModal2}
                 onClose={() => setShowModal2(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddFeaturesBenefitsModal
+            <AddBannerDataModal
                 isOpen={showModal3}
                 onClose={() => setShowModal3(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddEngagingSlotsModal
+            <AddBenefitsDataModal
                 isOpen={showModal4}
                 onClose={() => setShowModal4(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddWhatWeGetModal
+            <EditaDeveloperCommunityModal
                 isOpen={showModal5}
                 onClose={() => setShowModal5(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddSecurityAndComplianceModal
+            <EditFooterDeveloperModal
                 isOpen={showModal6}
                 onClose={() => setShowModal6(false)}
                 fetchdata={fetchData}
                 data={selectedItem}
                 edit={isEditMode}
             />
-            <AddGameCategoriesModal
-                isOpen={showModal7}
-                onClose={() => setShowModal7(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <EditFooterModal
-                isOpen={showModal8}
-                onClose={() => setShowModal8(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <EditHeroSectionModal
-                isOpen={showModal9}
-                onClose={() => setShowModal9(false)}
-                fetchdata={fetchData}
-                data={selectedItem}
-                edit={isEditMode}
-            />
-            <ConfirmModal
-                isOpen={showModal1}
-                onClose={() => setShowModal1(false)}
-                onConfirm={handleDeleteConfirm}
-                loading={deleteLoading}
-                text="Delete"
-            />
+
+
 
             <div className="min-h-screen bg-gray-100 mt-3">
                 {/* Header */}

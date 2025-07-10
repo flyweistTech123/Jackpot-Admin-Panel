@@ -1,6 +1,6 @@
 import { Trash2 } from 'lucide-react';
 
-const EngagingSlotPreview = ({ data, title, handleDelete }) => {
+const GamesPriview  = ({ data, title, handleDelete }) => {
     return (
         <div className="bg-gradient-to-b from-black to-[#0A0E15] p-8 rounded-lg">
             <h2 className="text-4xl font-bold mb-8 text-white text-center">
@@ -20,7 +20,6 @@ const EngagingSlotPreview = ({ data, title, handleDelete }) => {
                             />
                         </div>
                         <div className="p-4 flex flex-col flex-grow justify-between">
-                            <p className="text-white text-sm mb-4">{item.description}</p>
                             <h3 className="text-green-400 text-lg font-semibold flex items-center justify-between">
                                 {item.title}
                                 {handleDelete && (
@@ -41,4 +40,4 @@ const EngagingSlotPreview = ({ data, title, handleDelete }) => {
     );
 };
 
-export default EngagingSlotPreview;
+export default GamesPriview ;
