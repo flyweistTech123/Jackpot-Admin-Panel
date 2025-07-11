@@ -5,6 +5,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import endPoints from '../../Repository/apiConfig';
 import { postApi } from '../../Repository/Api';
 import { toast } from 'sonner';
+import { useAdmin } from '../Admin Profile/AdminContext';
 
 
 const Login = () => {
@@ -14,6 +15,9 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
+      const { refreshAdminData } = useAdmin();
+  
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("rememberedEmail");
@@ -49,6 +53,7 @@ const Login = () => {
 
         sessionStorage.setItem("token", response?.accessToken);
         navigate('/dashboard');
+         refreshAdminData();
       },
       setLoading,
       successMsg: "Login Successfully!",

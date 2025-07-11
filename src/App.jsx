@@ -21,6 +21,13 @@ import DeveloperPage from './pages/Website Management/Developer Page';
 import JobPage from './pages/Website Management/Jobs Page';
 import LegalPage from './pages/Website Management/Legal page';
 import GamePage from './pages/Website Management/Game Page';
+import JobDetails from './pages/Website Management/Jobs Page/JobDetails';
+import AddJob from './pages/Website Management/Jobs Page/AddJob';
+import Applicants from './pages/Website Management/Jobs Page/Applicants';
+import Departments from './pages/Website Management/Jobs Page/Departments';
+import EmploymentTypes from './pages/Website Management/Jobs Page/EmploymentTypes';
+import Locations from './pages/Website Management/Jobs Page/Locations';
+import AdminProfile from './pages/Admin Profile/AdminProfile';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -62,6 +69,13 @@ export default function App() {
           <Route path="/website/jobs-page" element={<JobPage />} />
           <Route path="/website/legal-page" element={<LegalPage />} />
           <Route path="/website/game-page" element={<GamePage />} />
+          <Route path="/website/jobs-page/details/:id" element={<JobDetails />} />
+          <Route path="/website/jobs-page/add" element={<AddJob />} />
+          <Route path="/website/jobs-page/applicants" element={<Applicants />} />
+          <Route path="/website/jobs-page/departments" element={<Departments />} />
+          <Route path="/website/jobs-page/employment-types" element={<EmploymentTypes />} />
+          <Route path="/website/jobs-page/locations" element={<Locations />} />
+          <Route path="/admin-details" element={<AdminProfile />} />
         </Routes>
       </Suspense>
     </Router>

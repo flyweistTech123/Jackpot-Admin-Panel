@@ -5585,6 +5585,555 @@ const EditFooterInLegalPageModal = ({ isOpen, onClose, edit, data, fetchdata }) 
     );
 }
 
+
+const AddNewDepartmentModal = ({ isOpen, onClose, edit, data, fetchdata }) => {
+    if (!isOpen) return null;
+
+    const id = data?._id;
+    const [title, setTitle] = useState(data?.title || '');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (edit && data) {
+            setTitle(data?.title || "");
+        } else if (!edit) {
+            resetForm();
+        }
+    }, [edit, data]);
+
+    const resetForm = () => {
+        setTitle("");
+    };
+
+
+    const handleSubmit = async () => {
+        if (!title) {
+            toast.error("Please provide all the fields!");
+            return;
+        }
+
+        const payload = {
+            title: title
+        }
+        await postApi(endPoints.addNewDepartment, payload, {
+            setLoading,
+            successMsg: "Department added successfully!",
+            errorMsg: "Failed to add department!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    const handleupdate = async () => {
+        const payload = {
+            title: title
+        }
+        await putApi(endPoints.updateDepartmentbyid(id), payload, {
+            setLoading,
+            successMsg: "Department updated successfully!",
+            errorMsg: "Failed to update department!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+            <div className="bg-white rounded-xl w-full max-w-lg p-3 relative shadow-lg">
+                {/* Close Button */}
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="font-manrope text-[16px] font-bold text-[#000000]">
+                        {edit ? "Edit Department" : "Add New Department"}
+                    </h2>
+                    <IoMdCloseCircleOutline
+                        color="#C12D34"
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={onClose}
+                    />
+                </div>
+
+                {/* Form Fields */}
+                <div className="mb-4 space-y-4">
+                    {/* Title */}
+                    <div>
+                        <label htmlFor="title" className="block font-manrope text-[14px] font-semibold text-[#000000] mb-1">
+                            Title
+                        </label>
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="Enter the title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-[#FFB000] focus:ring-1 focus:ring-[#FFB000]"
+                        />
+                    </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-3 mt-4">
+                    <button
+                        onClick={onClose}
+                        className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={edit ? handleupdate : handleSubmit}
+                        disabled={loading}
+                        className="px-10 py-3 cursor-pointer bg-[#FFB0004D]  border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000] disabled={loading}"
+                    >
+                        {loading ? "Saving..." : "Save"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+const AddNewEmployeeTypeModal = ({ isOpen, onClose, edit, data, fetchdata }) => {
+    if (!isOpen) return null;
+
+    const id = data?._id;
+    const [title, setTitle] = useState(data?.title || '');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (edit && data) {
+            setTitle(data?.title || "");
+        } else if (!edit) {
+            resetForm();
+        }
+    }, [edit, data]);
+
+    const resetForm = () => {
+        setTitle("");
+    };
+
+
+    const handleSubmit = async () => {
+        if (!title) {
+            toast.error("Please provide all the fields!");
+            return;
+        }
+
+        const payload = {
+            title: title
+        }
+        await postApi(endPoints.addNewEmploymentType, payload, {
+            setLoading,
+            successMsg: "Employment Type added successfully!",
+            errorMsg: "Failed to add employment type!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    const handleupdate = async () => {
+        const payload = {
+            title: title
+        }
+        await putApi(endPoints.updateEmploymentTypebyid(id), payload, {
+            setLoading,
+            successMsg: "Employment Type updated successfully!",
+            errorMsg: "Failed to update Eemployment type!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+            <div className="bg-white rounded-xl w-full max-w-lg p-3 relative shadow-lg">
+                {/* Close Button */}
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="font-manrope text-[16px] font-bold text-[#000000]">
+                        {edit ? "Edit Employment Type" : "Add New Employment Type"}
+                    </h2>
+                    <IoMdCloseCircleOutline
+                        color="#C12D34"
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={onClose}
+                    />
+                </div>
+
+                {/* Form Fields */}
+                <div className="mb-4 space-y-4">
+                    {/* Title */}
+                    <div>
+                        <label htmlFor="title" className="block font-manrope text-[14px] font-semibold text-[#000000] mb-1">
+                            Title
+                        </label>
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="Enter the title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-[#FFB000] focus:ring-1 focus:ring-[#FFB000]"
+                        />
+                    </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-3 mt-4">
+                    <button
+                        onClick={onClose}
+                        className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={edit ? handleupdate : handleSubmit}
+                        disabled={loading}
+                        className="px-10 py-3 cursor-pointer bg-[#FFB0004D]  border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000] disabled={loading}"
+                    >
+                        {loading ? "Saving..." : "Save"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+const AddNewLocationModal = ({ isOpen, onClose, edit, data, fetchdata }) => {
+    if (!isOpen) return null;
+
+    const id = data?._id;
+    const [title, setTitle] = useState(data?.title || '');
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (edit && data) {
+            setTitle(data?.title || "");
+        } else if (!edit) {
+            resetForm();
+        }
+    }, [edit, data]);
+
+    const resetForm = () => {
+        setTitle("");
+    };
+
+
+    const handleSubmit = async () => {
+        if (!title) {
+            toast.error("Please provide all the fields!");
+            return;
+        }
+
+        const payload = {
+            title: title
+        }
+        await postApi(endPoints.addNewLocation, payload, {
+            setLoading,
+            successMsg: "Location added successfully!",
+            errorMsg: "Failed to add location!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    const handleupdate = async () => {
+        const payload = {
+            title: title
+        }
+        await putApi(endPoints.updateLocationbyid(id), payload, {
+            setLoading,
+            successMsg: "Location updated successfully!",
+            errorMsg: "Failed to update location!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => resetForm(),
+                () => onClose(),
+            ],
+        });
+    };
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+            <div className="bg-white rounded-xl w-full max-w-lg p-3 relative shadow-lg">
+                {/* Close Button */}
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="font-manrope text-[16px] font-bold text-[#000000]">
+                        {edit ? "Edit Location" : "Add New Location"}
+                    </h2>
+                    <IoMdCloseCircleOutline
+                        color="#C12D34"
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={onClose}
+                    />
+                </div>
+
+                {/* Form Fields */}
+                <div className="mb-4 space-y-4">
+                    {/* Title */}
+                    <div>
+                        <label htmlFor="title" className="block font-manrope text-[14px] font-semibold text-[#000000] mb-1">
+                            Title
+                        </label>
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder="Enter the title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-[#FFB000] focus:ring-1 focus:ring-[#FFB000]"
+                        />
+                    </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-3 mt-4">
+                    <button
+                        onClick={onClose}
+                        className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        onClick={edit ? handleupdate : handleSubmit}
+                        disabled={loading}
+                        className="px-10 py-3 cursor-pointer bg-[#FFB0004D]  border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000] disabled={loading}"
+                    >
+                        {loading ? "Saving..." : "Save"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+
+const UpdateGameLogsModal = ({ isOpen, onClose, data, fetchdata }) => {
+    if (!isOpen) return null;
+
+    const id = data?._id;
+    const [redeemedStatus, setRedeemedStatus] = useState(data?.redeemedStatus || "");
+    const [loading, setLoading] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    useEffect(() => {
+        if (data) {
+            setRedeemedStatus(data?.redeemedStatus || "");
+        }
+    }, [data]);
+
+    const handleRedeemClick = () => {
+        if (redeemedStatus === "pending") {
+            toast.info("You can only redeem after the user has sent a request.");
+            return;
+        }
+
+        if (redeemedStatus === "notAllowed") {
+            toast.info("This user lost the game, so redeeming is not allowed.");
+            return;
+        }
+
+        if (redeemedStatus === "request") {
+            setShowConfirm(true);
+        } else {
+            toast.info("Status cannot be updated to redeemed from this state.");
+        }
+    };
+
+    const handleConfirmRedeem = async () => {
+        const payload = {
+            redeemedStatus: "redeemed",
+        };
+
+        await putApi(endPoints.updateRedeemedRequestbyid(id), payload, {
+            setLoading,
+            successMsg: "Redeem request updated successfully!",
+            errorMsg: "Failed to update redeem request!",
+            additionalFunctions: [
+                () => fetchdata(),
+                () => {
+                    onClose();
+                    setShowConfirm(false);
+                },
+            ],
+        });
+    };
+
+    return (
+        <>
+            {/* Confirm modal */}
+            <ConfirmModal
+                isOpen={showConfirm}
+                onClose={() => setShowConfirm(false)}
+                onConfirm={handleConfirmRedeem}
+                loading={loading}
+                text="Redeem"
+                title="Are you sure you want to mark this as Redeemed?"
+            />
+
+            {/* Main modal */}
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+                <div className="bg-white rounded-xl w-full max-w-lg p-3 relative shadow-lg">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-3">
+                        <h2 className="font-manrope text-[16px] font-bold text-[#000000]">
+                            Update Redeem Request Status
+                        </h2>
+                        <IoMdCloseCircleOutline
+                            color="#C12D34"
+                            size={25}
+                            className="cursor-pointer"
+                            onClick={onClose}
+                        />
+                    </div>
+
+                    {/* Current status info */}
+                    <div className="mb-4">
+                        <p className="font-manrope text-[14px] font-semibold mb-2">Current Status</p>
+                        <span
+                            className={`inline-block px-4 py-2 rounded-full text-white font-bold
+                ${redeemedStatus === "pending" && "bg-yellow-500"}
+                ${redeemedStatus === "request" && "bg-blue-500"}
+                ${redeemedStatus === "redeemed" && "bg-green-600"}
+                ${redeemedStatus === "notAllowed" && "bg-red-500"}
+              `}
+                        >
+                            {redeemedStatus.charAt(0).toUpperCase() + redeemedStatus.slice(1)}
+                        </span>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex justify-center gap-3 mt-4">
+                        <button
+                            onClick={onClose}
+                            className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleRedeemClick}
+                            disabled={loading}
+                            className="px-10 py-3 cursor-pointer bg-[#FFB0004D] border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000]"
+                        >
+                            {loading ? "Processing..." : "Mark as Redeemed"}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+
+const ResumeViewModal = ({ isOpen, onClose, data }) => {
+    if (!isOpen) return null;
+
+    const [resumeUrl, setResumeUrl] = useState(null);
+    const [fileType, setFileType] = useState("");
+
+    useEffect(() => {
+        if (data?.resume) {
+            setResumeUrl(data.resume);
+            const extension = data.resume.split(".").pop().toLowerCase();
+            setFileType(extension);
+        }
+    }, [data]);
+
+    const handleDownload = () => {
+        if (resumeUrl) {
+            const link = document.createElement("a");
+            link.href = resumeUrl;
+            link.download = "resume";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    };
+
+
+    const fileUrl =
+        resumeUrl instanceof File
+            ? URL.createObjectURL(resumeUrl)
+            : resumeUrl;
+
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+            <div className="bg-white rounded-xl w-full max-w-2xl p-4 relative shadow-lg h-[80vh] overflow-auto">
+                {/* Close Button */}
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="font-manrope text-[16px] font-bold text-[#000000]">
+                        Resume Viewer
+                    </h2>
+                    <IoMdCloseCircleOutline
+                        color="#C12D34"
+                        size={25}
+                        className="cursor-pointer"
+                        onClick={onClose}
+                    />
+                </div>
+
+                {/* Viewer */}
+                <div className="h-[60vh] border rounded overflow-hidden">
+                    {fileType === "pdf" ? (
+                        <iframe
+                            src={resumeUrl}
+                            title="PDF Preview"
+                            className="w-full h-full border-none"
+                        />
+
+                    ) : fileType === "doc" || fileType === "docx" ? (
+                        <iframe
+                            src={`https://docs.google.com/gview?url=${resumeUrl}&embedded=true`}
+                            title="DOC/DOCX Preview"
+                            className="w-full h-full border-none"
+                        />
+                    ) : (
+                        <p className="text-center text-red-500 font-semibold p-5">
+                            Unsupported file type.
+                        </p>
+                    )}
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-3 mt-4">
+                    <button
+                        onClick={onClose}
+                        className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                    >
+                        Close
+                    </button>
+                    <button
+                        onClick={handleDownload}
+                        className="px-10 py-3 cursor-pointer bg-[#FFB0004D] border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000]"
+                    >
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+
+
+
+
 export {
     ConfirmModal,
     AddRuleModal,
@@ -5611,5 +6160,10 @@ export {
     EditHeroSectionLegalPageModal,
     AddDataProtectionInLegalPageDataModal,
     EditPrivacyPolicyLegalModal,
-    EditFooterInLegalPageModal
+    EditFooterInLegalPageModal,
+    AddNewDepartmentModal,
+    AddNewEmployeeTypeModal,
+    AddNewLocationModal,
+    UpdateGameLogsModal,
+    ResumeViewModal
 }

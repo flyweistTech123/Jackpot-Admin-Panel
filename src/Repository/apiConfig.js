@@ -2,6 +2,7 @@ import { buildQueryString } from "../utils/utils";
 
 const endPoints = {
     loginAdmin: "admin/signin",
+    getadminprofile: "user/getProfile",
 
 
     getallUser: (page, limit, search, kycFilter) =>
@@ -10,8 +11,12 @@ const endPoints = {
         `admin/allTransactionList?page=${page}&limit=${limit}&search=${search ? search : ""}&status=${status ? status : ""}`,
 
     getallgameslogs: (query) => `admin/allPayoutList?${buildQueryString(query)}`,
-    getallJobList: (page, limit, search, departmentId, locationId, employmentTypeId) =>
-        `user/getAllJobs?page=${page}&limit=${limit}&search=${search ? search : ""}&departmentId=${departmentId ? departmentId : ""}&locationId=${locationId ? locationId : ""}&employmentTypeId=${employmentTypeId ? employmentTypeId : ""}`,
+    getallJobList: (page, limit, search, departmentId, locationId, employmentTypeId, startdate, enddate) =>
+        `user/getAllJobsForAdmin?page=${page}&limit=${limit}&search=${search ? search : ""}&departmentId=${departmentId ? departmentId : ""}&locationId=${locationId ? locationId : ""}&employmentTypeId=${employmentTypeId ? employmentTypeId : ""}&fromDate=${startdate ? startdate : ""}&toDate=${enddate ? enddate : ""}`,
+
+    getallApplicantList: (page, limit, search, startdate, enddate) =>
+        `user/getAllAppliedJobForAdmin?page=${page}&limit=${limit}&search=${search ? search : ""}&fromDate=${startdate ? startdate : ""}&toDate=${enddate ? enddate : ""}`,
+
 
 
     getrules: (page, limit) =>
@@ -39,6 +44,9 @@ const endPoints = {
 
     getuserbyid: (id) =>
         `admin/User/${id}`,
+
+    getJobbyid: (id) =>
+        `user/getJobs/${id}`,
 
 
 
@@ -71,12 +79,28 @@ const endPoints = {
     addLegalPage: "user/createLegalPage",
     addDataProtectionInLegalPage: "user/addDataProtectionInLegalPage",
     addFooterInLegalPage: "user/addFooterInLegalPage",
+    addNewJob: "user/createJobs",
+    addNewDepartment: "user/createDepartment",
+    addNewEmploymentType: "user/createEmploymentType",
+    addNewLocation: "user/createLocation",
 
 
 
 
     updateRole: (id) =>
         `admin/updateRule/${id}`,
+
+    updateJobbyid: (id) =>
+        `user/updateJobs/${id}`,
+    updateDepartmentbyid: (id) =>
+        `user/updateDepartment/${id}`,
+    updateEmploymentTypebyid: (id) =>
+        `user/updateEmploymentType/${id}`,
+    updateLocationbyid: (id) =>
+        `user/updateLocation/${id}`,
+    updateRedeemedRequestbyid: (id) =>
+        `static/updateRedeemedRequest/${id}`,
+    updateadminprofile: "admin/update",
 
 
 
@@ -110,6 +134,14 @@ const endPoints = {
         `user/deleteDataInGamePage/${id}`,
     deleteDataProtectionInLegalPage: (id) =>
         `user/deleteDataProtectionInLegalPage/${id}`,
+    deleteJobs: (id) =>
+        `user/deleteJobs/${id}`,
+    deleteDepartment: (id) =>
+        `user/deleteDepartment/${id}`,
+    deleteEmploymentType: (id) =>
+        `user/deleteEmploymentType/${id}`,
+    deleteLocation: (id) =>
+        `user/deleteLocation/${id}`,
 
 
 

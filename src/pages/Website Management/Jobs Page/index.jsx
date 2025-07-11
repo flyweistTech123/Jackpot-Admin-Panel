@@ -1,17 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import DashbaordLayout from '../../../components/DashbaordLayout'
-
-import { IoSearch } from "react-icons/io5";
-import { PiEyeBold } from "react-icons/pi";
-import { RiDeleteBin6Line } from "react-icons/ri";
-
-
-
+import Pagination from '../../../components/Pagination/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { ConfirmModal } from '../../../components/Modals/Modal';
 import endPoints from '../../../Repository/apiConfig';
 import { deleteApi, getApi } from '../../../Repository/Api';
-import Pagination from '../../../components/Pagination/Pagination';
+
+
+import { IoSearch } from "react-icons/io5";
+import { PiEyeBold } from "react-icons/pi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { formatDate } from '../../../utils/utils';
+
+
+
+
 
 
 const JobsPage = () => {
@@ -36,20 +39,20 @@ const JobsPage = () => {
     });
     const [itemToDelete, setItemToDelete] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [kycFilter, setKycFilter] = useState("");
     const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
     const [selectedLocationId, setSelectedLocationId] = useState("");
     const [selectedEmployeeTypeId, setSelectedEmployeeTypeId] = useState("");
-
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const fetchData = useCallback(async () => {
         setJobData([])
-        await getApi(endPoints.getallJobList(pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId), {
+        await getApi(endPoints.getallJobList(pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId, startDate, endDate), {
             setResponse: setJobData,
             setLoading: setLoading,
             errorMsg: "Failed to fetch jobs data!",
         })
-    }, [pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId]);
+    }, [pagination.page, pagination.limit, searchQuery, selectedDepartmentId, selectedLocationId, selectedEmployeeTypeId, startDate, endDate]);
 
     useEffect(() => {
         setPagination((prevPagination) => ({
@@ -82,7 +85,7 @@ const JobsPage = () => {
 
     const handleConfirm = async () => {
         if (!itemToDelete) return;
-        await deleteApi(endPoints.deleteuser(itemToDelete), {
+        await deleteApi(endPoints.deleteJobs(itemToDelete), {
             setLoading: setDeleteLoading,
             successMsg: "Job deleted successfully!",
             errorMsg: "Failed to delete job!",
@@ -132,9 +135,55 @@ const JobsPage = () => {
     }, [fetchDepartmentData, fetchLocationData, fetchEmploymentTypeData]);
 
 
+    const resetFilters = () => {
+        setStartDate("");
+        setEndDate("");
+        setPagination((prev) => ({ ...prev, page: 1 }));
+        fetchData({
+            page: 1,
+            limit: pagination.limit,
+            startDate: "",
+            endDate: "",
+        });
+    };
+
     return (
         <DashbaordLayout title="All Jobs"
-            hedartitle="All Jobs"
+            hedartitle={`Website > Jobs`}
+            headerAction={
+                <div className='flex flex-wrap items-center gap-2'>
+                    <button
+                        onClick={() => navigate('/website/jobs-page/add')}
+                        className='bg-primary cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        Add New Job
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/website/jobs-page/applicants')}
+                        className='bg-[#1C1B1F] cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        All Applicants
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/website/jobs-page/departments')}
+                        className='bg-[#1C1B1F] cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        Departments
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/website/jobs-page/employment-types')}
+                        className='bg-[#1C1B1F] cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        Employment Types
+                    </button>
+
+                    <button
+                        onClick={() => navigate('/website/jobs-page/locations')}
+                        className='bg-[#1C1B1F] cursor-pointer flex items-center gap-2 shadow-2xl px-5 py-2 rounded-[4px] font-urbanist text-sm font-semibold text-white'>
+                        Locations
+                    </button>
+                </div>
+            }
+
         >
             <ConfirmModal
                 isOpen={showModal}
@@ -146,7 +195,7 @@ const JobsPage = () => {
             <div className="sm:mt-3 mt-2">
                 <div className='flex items-center justify-between mb-2 flex-wrap gap-2'>
                     <div className='flex items-center gap-2 flex-wrap'>
-                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-sm'>
+                        <div className='bg-white py-2 px-5 flex items-center justify-between rounded-[8px] w-full sm:w-[300px]'>
                             <input
                                 type="search"
                                 placeholder="Search by job title"
@@ -184,7 +233,6 @@ const JobsPage = () => {
                                 ))
                             }
                         </select>
-
                         <select
                             value={selectedLocationId}
                             onChange={(e) => setSelectedLocationId(e.target.value)}
@@ -227,10 +275,27 @@ const JobsPage = () => {
                                 ))
                             }
                         </select>
-
                     </div>
-
-
+                </div>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <input
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="bg-white border px-4 py-2 rounded-md text-sm"
+                    />
+                    <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="bg-white border px-4 py-2 rounded-md text-sm"
+                    />
+                    <button
+                        onClick={resetFilters}
+                        className="bg-gray-500 text-white font-semibold cursor-pointer px-4 py-2 rounded-md text-sm"
+                    >
+                        Reset Filters
+                    </button>
                 </div>
                 <div className='overflow-x-auto'>
                     <table className="min-w-full border-collapse">
@@ -239,10 +304,10 @@ const JobsPage = () => {
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[10px] rounded-bl-[10px]">#</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Job Title</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Type Of Job</th>
-                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Remote</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Location</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Employment Type</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Department</th>
+                                <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">Posted Date</th>
                                 <th className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tr-[10px] rounded-br-[10px]">Action</th>
                             </tr>
                         </thead>
@@ -257,25 +322,25 @@ const JobsPage = () => {
                                     </td>
                                 </tr>
                                 :
-                                (!jobData?.data || jobData?.data?.length === 0) ? (
+                                (!jobData?.data || jobData?.data?.length === 0 || jobData?.data?.docs?.length === 0) ? (
                                     <tr>
                                         <td colSpan="9" className='text-center'>
                                             <p className='font-urbanist text-md font-semibold text-[#0A0E15]'>No jobs found!</p>
                                         </td>
                                     </tr>
                                 ) :
-                                    jobData?.data?.map((i, index) => (
+                                    jobData?.data?.docs?.map((i, index) => (
                                         <tr key={index} className=" bg-white space-y-10 transition-all hover:bg-[#E1F7FF]">
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">{index + 1}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.title}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.typeOfJob}</td>
-                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.remote}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.locationId?.title}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.employmentTypeId?.title}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{i?.departmentId?.title}</td>
+                                            <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0]">{formatDate(i.createdAt)}</td>
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
                                                 <div className="flex items-center gap-2">
-                                                    <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
+                                                    <button onClick={() => navigate(`/website/jobs-page/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
                                                         <PiEyeBold color='#FFB000' size={20} />
                                                     </button>
                                                     <button onClick={() => handleDeleteClick(i?._id)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#C23A3A] flex items-center gap-1">

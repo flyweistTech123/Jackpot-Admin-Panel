@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashbaordLayout from '../../components/DashbaordLayout'
 
 import { FiEdit } from "react-icons/fi";
@@ -8,10 +8,12 @@ import endPoints from '../../Repository/apiConfig';
 import { getApi } from '../../Repository/Api';
 import { formatDate } from '../../utils/utils';
 import Pagination from '../../components/Pagination/Pagination';
+import { UpdateGameLogsModal } from '../../components/Modals/Modal';
 
 
 const GameLogs = () => {
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
     const [gamelogsData, setGameLogsData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
@@ -26,6 +28,7 @@ const GameLogs = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [redeemedStatus, setRedeemedStatus] = useState("");
+    const [selectedItem, setSelectedItem] = useState(null);
 
 
 
@@ -107,6 +110,16 @@ const GameLogs = () => {
             redeemedStatus: "",
         });
     };
+    const openAddModal = () => {
+        setSelectedItem(null);
+        setShowModal(true);
+    };
+
+
+    const openEditModal = (item) => {
+        setSelectedItem(item);
+        setShowModal(true);
+    };
 
 
 
@@ -115,6 +128,12 @@ const GameLogs = () => {
         <DashbaordLayout title="Game Logs"
             hedartitle="Game Logs"
         >
+            <UpdateGameLogsModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                fetchdata={fetchData}
+                data={selectedItem}
+            />
             <div className="sm:mt-3 mt-2">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                     {/* Timeframe */}
@@ -168,7 +187,7 @@ const GameLogs = () => {
                         Apply Filters
                     </button>
                     <button
-                         onClick={resetFilters}
+                        onClick={resetFilters}
                         className="bg-gray-500 text-white font-semibold cursor-pointer px-4 py-2 rounded-md text-sm"
                     >
                         Reset Filters
@@ -229,7 +248,7 @@ const GameLogs = () => {
 
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
                                                 <div className="flex items-center gap-2">
-                                                    <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
+                                                    <button onClick={() => openEditModal(i)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
                                                         <FiEdit color='#FFB000' size={20} />
                                                     </button>
                                                 </div>

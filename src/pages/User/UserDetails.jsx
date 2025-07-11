@@ -40,7 +40,7 @@ const UserDetails = () => {
     const userId = id;
 
     const fetchData = useCallback(async () => {
-        setUserData([]);
+        setUserData({});
         await getApi(endPoints.getuserbyid(id), {
             setResponse: setUserData,
             setLoading: setLoading,

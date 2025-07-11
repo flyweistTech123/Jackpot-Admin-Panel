@@ -26,7 +26,8 @@ import { PiOfficeChair } from "react-icons/pi";
 
 
 import img1 from '../../assets/images/logo.png'
-import img2 from '../../assets/images/Adviser1.png'
+import defaultAvatar from '../../assets/images/images.jpeg'
+import { useAdmin } from "../../pages/Admin Profile/AdminContext";
 
 /**
  * Dashboard Layout Component
@@ -44,6 +45,8 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { adminProfile, loading } = useAdmin();
 
   const navItems = [
     {
@@ -123,7 +126,7 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       children: [
         {
           name: "Home Page",
-          icon: GoHome ,
+          icon: GoHome,
           path: "/website/home-page"
         },
         {
@@ -166,6 +169,13 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
       ...prev,
       [menuName]: !prev[menuName],
     }));
+  };
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminProfile");
+    sessionStorage.removeItem("token");
+    navigate('/')
   };
 
   return (
@@ -290,7 +300,11 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
               <FiMenu size={24} />
             </button>
             <div className="bg-white w-[60px] h-[60px] rounded-full flex items-center justify-center">
-              <img src={img1} alt="Logo" className="w-[50px] h-[50px] object-contain rounded-full" />
+              <img
+                src={img1}
+                alt="Logo"
+                className="w-[50px] h-[50px] object-contain rounded-full"
+              />
             </div>
             <div className="text-white font-bold text-xl leading-tight uppercase">
               Jackpot<br />Admin
@@ -301,15 +315,33 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
               <span>{hedartitle}</span>
             </div>
           </div>
-          <div className="bg-white w-[50px] h-[50px] rounded-full cursor-pointer">
-            <img src={img2} alt="Logo" className="w-full h-full object-cover rounded-full" />
+
+          {/* Admin Profile Section */}
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex flex-col text-right text-white">
+              <p className="font-semibold">{adminProfile?.fullName || "Admin Name"}</p>
+              <p className="text-xs opacity-80">{adminProfile?.email || "admin@email.com"}</p>
+            </div>
+            <div className="w-[50px] h-[50px] cursor-pointer rounded-full overflow-hidden border-2 border-white" onClick={() => navigate('/admin-details')}>
+              <img
+                src={adminProfile?.profilePicture || defaultAvatar}
+                alt="Admin"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <button
+              onClick={handleLogout}
+              className="ml-2 px-4 cursor-pointer py-2 bg-red-600 text-white text-xs rounded-md hover:bg-red-700"
+            >
+              Logout
+            </button>
           </div>
         </header>
 
         {/* Main Content */}
         <main className="pt-[90px] h-full  px-4 overflow-hidden flex-1">
           <div className="h-full overflow-auto hidescroll">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap gap-2 sm:gap-0 items-center justify-between">
               <div className="flex items-center gap-2">
                 {titleAction}
                 <h2 className="font-urbanist text-[18px] font-[600] text-[#0A0E15] whitespace-nowrap">
