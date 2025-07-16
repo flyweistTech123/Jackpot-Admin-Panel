@@ -22,6 +22,7 @@ import { MdOutlineDeveloperMode } from "react-icons/md";
 import { GrGamepad } from "react-icons/gr";
 import { VscLaw } from "react-icons/vsc";
 import { PiOfficeChair } from "react-icons/pi";
+import { IoMdHelpCircleOutline } from "react-icons/io";
 
 
 
@@ -150,6 +151,11 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
           path: "/website/jobs-page"
         },
       ],
+    },
+    {
+      name: "All Inquiry",
+      icon: IoMdHelpCircleOutline ,
+      path: "/all-inquiry"
     },
   ];
 

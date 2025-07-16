@@ -20,6 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getApi } from '../../Repository/Api';
 import endPoints from '../../Repository/apiConfig';
 import { formatDate } from '../../utils/utils';
+import { UpdateGameLogsModal } from '../../components/Modals/Modal';
 
 
 
@@ -43,6 +44,12 @@ const Dashboard = () => {
         hasPrevPage: false,
         hasNextPage: false,
     });
+
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
+
+
     const fetchData = useCallback(async () => {
         setUserData([])
         await getApi(endPoints.getallUser(pagination.page, pagination.limit), {
@@ -137,11 +144,22 @@ const Dashboard = () => {
     ];
 
 
+    const openEditModal = (item) => {
+        setSelectedItem(item);
+        setShowModal(true);
+    };
+
 
     return (
         <DashbaordLayout
             hedartitle="Dashboard"
         >
+            <UpdateGameLogsModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                fetchdata={fetchData}
+                data={selectedItem}
+            />
             {loading || loading1 || loading2 ?
                 <div className="text-center">
                     <div className="w-16 h-16 border-4 border-[#FFB000] border-t-transparent rounded-full animate-spin mx-auto"></div>
@@ -292,7 +310,7 @@ const Dashboard = () => {
 
                                                     <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
                                                         <div className="flex items-center gap-2">
-                                                            <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
+                                                            <button onClick={() => openEditModal(i)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
                                                                 <FiEdit color='#FFB000' size={20} />
                                                             </button>
                                                         </div>

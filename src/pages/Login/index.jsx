@@ -124,9 +124,9 @@ const Login = () => {
                 />
                 Remember me on this computer
               </label>
-              <p className="font-open-sans text-[14px] text-[#666666] cursor-pointer hover:underline">
+              {/* <p className="font-open-sans text-[14px] text-[#666666] cursor-pointer hover:underline">
                 Forgot Password?
-              </p>
+              </p> */}
             </div>
 
             <div>

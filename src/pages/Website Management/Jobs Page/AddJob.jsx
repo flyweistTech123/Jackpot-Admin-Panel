@@ -144,9 +144,9 @@ const AddJob = () => {
                             className="border p-2 rounded w-full max-w-md"
                         >
                             <option value="">Select...</option>
-                            <option value="remote">Remote</option>
-                            <option value="onSite">On-site</option>
-                            <option value="hybrid">Hybrid</option>
+                            <option value="Remote">Remote</option>
+                            <option value="On-Site">On-site</option>
+                            <option value="Hybrid">Hybrid</option>
                         </select>
                     </div>
                 </div>

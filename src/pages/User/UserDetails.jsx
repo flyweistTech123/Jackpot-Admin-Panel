@@ -12,15 +12,19 @@ import endPoints from '../../Repository/apiConfig';
 import { getApi } from '../../Repository/Api';
 import { formatDate } from '../../utils/utils';
 import Pagination from '../../components/Pagination/Pagination';
+import { UpdateGameLogsModal } from '../../components/Modals/Modal';
 
 const UserDetails = () => {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({});
     const [gamelogsData, setGameLogsData] = useState([]);
-    const [timeframe, setTimeframe] = useState("monthly");
+    const [timeframe, setTimeframe] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [redeemedStatus, setRedeemedStatus] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
 
 
     const [loading, setLoading] = useState(false);
@@ -138,6 +142,13 @@ const UserDetails = () => {
 
     const kycStatus = userData?.data?.isKyc;
 
+
+
+    const openEditModal = (item) => {
+        setSelectedItem(item);
+        setShowModal(true);
+    };
+
     return (
         <DashbaordLayout
             title="User Details"
@@ -151,6 +162,12 @@ const UserDetails = () => {
                 />
             }
         >
+            <UpdateGameLogsModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                fetchdata={fetchData}
+                data={selectedItem}
+            />
 
             {loading ? (
                 <div className="flex flex-col items-center justify-center min-h-[50vh]">
@@ -270,6 +287,7 @@ const UserDetails = () => {
                             }}
                             className="bg-white border px-4 py-2 rounded-md text-sm"
                         >
+                            <option value="">Select Time Frame</option>
                             <option value="monthly">Monthly</option>
                             <option value="weekly">Weekly</option>
                             <option value="custom">Custom</option>
@@ -369,7 +387,7 @@ const UserDetails = () => {
 
                                             <td className="px-4 py-2.5 border-b-10 border-[#E2E8F0] rounded-tl-[8px] rounded-bl-[8px]">
                                                 <div className="flex items-center gap-2">
-                                                    <button onClick={() => navigate(`/users/details/${i?._id}`)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
+                                                    <button onClick={() => openEditModal(i)} className="font-manrope cursor-pointer text-[15px] font-[400] text-[#11968A] flex items-center gap-1">
                                                         <FiEdit color='#FFB000' size={20} />
                                                     </button>
                                                 </div>

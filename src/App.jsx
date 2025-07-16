@@ -28,6 +28,7 @@ import Departments from './pages/Website Management/Jobs Page/Departments';
 import EmploymentTypes from './pages/Website Management/Jobs Page/EmploymentTypes';
 import Locations from './pages/Website Management/Jobs Page/Locations';
 import AdminProfile from './pages/Admin Profile/AdminProfile';
+import Inquiry from './pages/All Inquire';
 
 const Login = lazy(() => import('./pages/Login'));
 
@@ -76,6 +77,7 @@ export default function App() {
           <Route path="/website/jobs-page/employment-types" element={<EmploymentTypes />} />
           <Route path="/website/jobs-page/locations" element={<Locations />} />
           <Route path="/admin-details" element={<AdminProfile />} />
+          <Route path="/all-inquiry" element={<Inquiry />} />
         </Routes>
       </Suspense>
     </Router>

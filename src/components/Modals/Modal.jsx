@@ -5937,6 +5937,11 @@ const UpdateGameLogsModal = ({ isOpen, onClose, data, fetchdata }) => {
     }, [data]);
 
     const handleRedeemClick = () => {
+        if (redeemedStatus === "redeemed") {
+            toast.info("This reward has already been redeemed.");
+            return;
+        }
+
         if (redeemedStatus === "pending") {
             toast.info("You can only redeem after the user has sent a request.");
             return;
@@ -5975,16 +5980,6 @@ const UpdateGameLogsModal = ({ isOpen, onClose, data, fetchdata }) => {
 
     return (
         <>
-            {/* Confirm modal */}
-            <ConfirmModal
-                isOpen={showConfirm}
-                onClose={() => setShowConfirm(false)}
-                onConfirm={handleConfirmRedeem}
-                loading={loading}
-                text="Redeem"
-                title="Are you sure you want to mark this as Redeemed?"
-            />
-
             {/* Main modal */}
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
                 <div className="bg-white rounded-xl w-full max-w-lg p-3 relative shadow-lg">
@@ -6006,11 +6001,11 @@ const UpdateGameLogsModal = ({ isOpen, onClose, data, fetchdata }) => {
                         <p className="font-manrope text-[14px] font-semibold mb-2">Current Status</p>
                         <span
                             className={`inline-block px-4 py-2 rounded-full text-white font-bold
-                ${redeemedStatus === "pending" && "bg-yellow-500"}
-                ${redeemedStatus === "request" && "bg-blue-500"}
-                ${redeemedStatus === "redeemed" && "bg-green-600"}
-                ${redeemedStatus === "notAllowed" && "bg-red-500"}
-              `}
+                                ${redeemedStatus === "pending" && "bg-yellow-500"}
+                                ${redeemedStatus === "request" && "bg-blue-500"}
+                                ${redeemedStatus === "redeemed" && "bg-green-600"}
+                                ${redeemedStatus === "notAllowed" && "bg-red-500"}
+                            `}
                         >
                             {redeemedStatus.charAt(0).toUpperCase() + redeemedStatus.slice(1)}
                         </span>
@@ -6026,14 +6021,56 @@ const UpdateGameLogsModal = ({ isOpen, onClose, data, fetchdata }) => {
                         </button>
                         <button
                             onClick={handleRedeemClick}
-                            disabled={loading}
-                            className="px-10 py-3 cursor-pointer bg-[#FFB0004D] border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000]"
+                            disabled={loading || redeemedStatus === "redeemed"}
+                            className={`px-10 py-3 cursor-pointer rounded-[10px] font-poppins text-[16px] font-[500] ${redeemedStatus === "redeemed"
+                                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                                : "bg-[#FFB0004D] border border-[#FFB000] text-[#000000] hover:bg-[#FFB000]"
+                                }`}
                         >
-                            {loading ? "Processing..." : "Mark as Redeemed"}
+                            {loading
+                                ? "Processing..."
+                                : redeemedStatus === "redeemed"
+                                    ? "Already Redeemed"
+                                    : "Mark as Redeemed"
+                            }
                         </button>
                     </div>
                 </div>
             </div>
+
+            {/* Confirmation Modal */}
+            {showConfirm && (
+                <div className="fixed inset-0  flex items-center justify-center z-50 bg-black/80">
+                    <div className="bg-white w-full max-w-md rounded-lg shadow-2xl p-3">
+                        {/* Close Button */}
+
+                        <div className="flex items-center justify-between mb-3">
+                            <h2 className="font-poppins text-[16px] font-bold text-[#000000]">Are you Sure</h2>
+                            <IoMdCloseCircleOutline color="#C12D34" size={25} className="cursor-pointer" onClick={() => setShowConfirm(false)} />
+                        </div>
+
+                        <p className="font-poppins text-[18px] font-bold text-[#FFB000] text-center mb-6">
+                            Do you want to mark this as redeemed?
+                        </p>
+
+                        {/* Action Buttons */}
+                        <div className="flex justify-center gap-4">
+                            <button
+                                onClick={() => setShowConfirm(false)}
+                                className="px-10 py-3 cursor-pointer bg-[#94919180] border border-[#00000080] rounded-[10px] font-poppins text-[16px] font-[500] text-black hover:bg-[#00000080]"
+                            >
+                                 Cancel
+                            </button>
+                            <button
+                                onClick={handleConfirmRedeem}
+                                className="px-10 py-3 cursor-pointer bg-[#FFB0004D]  border border-[#FFB000] rounded-[10px] font-poppins text-[16px] font-[500] text-[#000000] hover:bg-[#FFB000]"
+                            >
+                                {loading ? "Processing..." : "Confirm"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };

@@ -22,6 +22,9 @@ const endPoints = {
     getrules: (page, limit) =>
         `admin/getRuleByAdmin?page=${page}&limit=${limit}`,
 
+
+    getallInquiry: (query) => `user/getAllInquire?${buildQueryString(query)}`,
+
     getprivacypolicy: "static/getPrivacy",
     getTermsandConditions: "static/getTerms",
     getCoinSystem: "static/getCoinSystem",

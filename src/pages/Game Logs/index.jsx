@@ -24,7 +24,7 @@ const GameLogs = () => {
         hasNextPage: false,
     });
 
-    const [timeframe, setTimeframe] = useState("monthly");
+    const [timeframe, setTimeframe] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [redeemedStatus, setRedeemedStatus] = useState("");
@@ -110,10 +110,6 @@ const GameLogs = () => {
             redeemedStatus: "",
         });
     };
-    const openAddModal = () => {
-        setSelectedItem(null);
-        setShowModal(true);
-    };
 
 
     const openEditModal = (item) => {
@@ -145,6 +141,7 @@ const GameLogs = () => {
                         }}
                         className="bg-white border px-4 py-2 rounded-md text-sm"
                     >
+                        <option value="">Select Time Frame</option>
                         <option value="monthly">Monthly</option>
                         <option value="weekly">Weekly</option>
                         <option value="custom">Custom</option>

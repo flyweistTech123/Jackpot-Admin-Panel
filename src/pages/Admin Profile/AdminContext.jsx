@@ -18,15 +18,22 @@ export const AdminProvider = ({ children }) => {
     };
 
     const fetchAdminData = useCallback(async () => {
+        const token = sessionStorage.getItem("token"); // or whatever you store
+        if (!token) {
+            console.log("No token, skipping fetchAdminData");
+            return; // ⛔ don't call API if not logged in
+        }
+
         await getApi(endPoints.getadminprofile, {
             setResponse: (data) => {
-                setAdminProfile(data.data); // ✅ store only `data`
+                setAdminProfile(data.data);
                 localStorage.setItem("adminProfile", JSON.stringify(data.data));
             },
             setLoading: setLoading,
             errorMsg: "Failed to fetch admin data!",
         });
     }, []);
+
 
 
     useEffect(() => {
