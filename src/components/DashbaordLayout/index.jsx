@@ -306,8 +306,8 @@ const DashbaordLayout = ({ children, title = "", hedartitle = "", titleAction = 
                 className="w-[50px] h-[50px] object-contain rounded-full"
               />
             </div>
-            <div className="text-white font-bold text-xl leading-tight uppercase">
-              Jackpot<br />Admin
+            <div className="text-white font-bold text-xl leading-tight">
+              SpinandShare<br />Admin
             </div>
             <div className="text-white text-sm ml-6 hidden sm:flex items-center gap-1">
               <span>Home</span>
